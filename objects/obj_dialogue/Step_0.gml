@@ -22,8 +22,9 @@ if (state == "talking")
             }
             else if (data.next != -1)
             {
-                node = data.next;
-                char_index = 0;
+               node = data.next;
+			   char_index = 0;
+			   current_text = "";
             }
         }
     }
@@ -36,9 +37,16 @@ if (state == "choice")
     {
         if (keyboard_check_pressed(ord(string(i+1))))
         {
-            affection += data.choices[i].aff;
-            node = data.choices[i].next;
+            var chosen = data.choices[i];
+
+            // Update affection if it exists
+            if (variable_struct_exists(chosen, "aff"))
+                affection += chosen.aff;
+
+            // Move to next node
+            node = chosen.next;
             char_index = 0;
+            current_text = "";
             state = "talking";
         }
     }
@@ -49,10 +57,16 @@ if (state == "input")
 {
     if (keyboard_check_pressed(vk_enter))
     {
+		if (node == 1)
+        {
+            player_name = player_input;
+        }
+		
         node = data.next;
-        char_index = 0;
-        player_input = "";
-        state = "talking";
+		char_index = 0;
+		current_text = "";
+		player_input = "";
+		state = "talking";
     }
 
     if (keyboard_check_pressed(vk_backspace))

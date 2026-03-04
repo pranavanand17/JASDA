@@ -1,4 +1,5 @@
 // Story system
+player_name = "";
 affection = 0;
 state = "talking";
 
