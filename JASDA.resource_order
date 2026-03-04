@@ -19,6 +19,7 @@
   "ResourceOrderSettings":[
     {"name":"obj_girl","order":2,"path":"objects/obj_girl/obj_girl.yy",},
     {"name":"obj_npc","order":1,"path":"objects/obj_npc/obj_npc.yy",},
+    {"name":"get_node","order":1,"path":"scripts/get_node/get_node.yy",},
     {"name":"spr_girl_neutral","order":1,"path":"sprites/spr_girl_neutral/spr_girl_neutral.yy",},
   ],
 }

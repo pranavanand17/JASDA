@@ -1,14 +1,10 @@
-// Dialogue lines
-dialogue = [
-    "Oh… hi.",
-    "I didn’t expect to see you here.",
-    "Do you come here often?"
-];
+// Story system
+affection = 0;
+state = "talking";
 
-dialogue_index = 0;
+node = 0;
 char_index = 0;
 text_speed = 1;
 current_text = "";
 
-state = "talking";
-affection = 0;
+player_input = "";

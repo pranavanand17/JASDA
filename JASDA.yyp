@@ -39,6 +39,7 @@
     {"id":{"name":"obj_girl","path":"objects/obj_girl/obj_girl.yy",},},
     {"id":{"name":"obj_npc","path":"objects/obj_npc/obj_npc.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"get_node","path":"scripts/get_node/get_node.yy",},},
     {"id":{"name":"Script1","path":"scripts/Script1/Script1.yy",},},
     {"id":{"name":"spr_bg_school","path":"sprites/spr_bg_school/spr_bg_school.yy",},},
     {"id":{"name":"spr_girl_neutral","path":"sprites/spr_girl_neutral/spr_girl_neutral.yy",},},
