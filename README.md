@@ -1,4 +1,4 @@
-Just Another Simulated Dating App (JASDA)
+Just Another Simulated Dating Adventure (JASDA)
 
 Under perenial development (as per usual)
 
