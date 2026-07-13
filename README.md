@@ -7,3 +7,6 @@ Just Another Simulated Dating Adventure (JASDA)
 Under perenial development (as per usual)
 
 Need to pop off on linkedin (@ 1 in the morning) 
+
+<img width="1920" height="1080" alt="united we stand divided we fall" src="https://github.com/user-attachments/assets/83061779-b5cd-4356-94ef-2beeff191569" />
+
