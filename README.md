@@ -10,4 +10,4 @@ Need to pop off on linkedin (@ 1 in the morning)
 
 <img width="1920" height="1080" alt="united we stand divided we fall" src="https://github.com/user-attachments/assets/50f569f1-b61f-4b19-813b-d2ed8b5bd0d5" />
 
-
+<img width="600" height="700" alt="ariel_bg" src="https://github.com/user-attachments/assets/2dc038c9-7a27-4420-b102-85c150e4ec60" />
