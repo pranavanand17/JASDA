@@ -11,4 +11,4 @@ Need to pop off on linkedin (@ 1 in the morning)
 All artwork is hand-drawn
 
 ## Meet the cast
-<img width="1920" height="1080" alt="Meet the cast" src="https://github.com/user-attachments/assets/73a4de09-e05e-49e9-a9e1-661265975c34" />
+<img width="1920" height="1080" alt="Meet the cast" src="https://github.com/user-attachments/assets/bcc3c675-2a77-47f3-9093-156c46932bd6" />
