@@ -9,19 +9,24 @@ for (var i = 0; i < array_length(slots); i++)
     {
         if (char.sprite != noone)
         {
-			if char.name == active_character
-			{
-			    char.alpha = 1;
-			}
-			else
-			{
-			    char.alpha = 0.5;
-			}
+            // Don't overwrite alpha while fading out
+            if (!char.fading_out)
+            {
+                if (char.name == active_character)
+                {
+                    char.alpha = 1;
+                }
+                else
+                {
+                    char.alpha = 0.5;
+                }
+            }
+
             draw_sprite_ext(
                 char.sprite,
                 0,
                 char.x,
-				char.y - char.bob_offset,
+                char.y - char.bob_offset,
                 char.scale,
                 char.scale,
                 0,

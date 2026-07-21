@@ -20,6 +20,6 @@ else
 
     if (fade_alpha <= 0)
     {
-        room_goto(rm_vn_test);
+        room_goto(rm_scene1);
     }
 }

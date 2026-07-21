@@ -1,30 +1,16 @@
 char_manager = instance_find(oCharacterManager,0);
 current_scene = noone;
-test_scene =
+scene_01_intro =
 {
-    background: spr_classroom,
+    background: spr_room,
 
     events:
 	[
 		{
-		    action:"show",
-		    character:"Jasda",
-		    position:"left",
-		    wait:60
-		},
-
-		{
-		    action:"show",
-		    character:"Amber",
-		    position:"right",
-		    wait:60
-		},
-
-		{
-		    action:"hide",
-		    character:"Amber",
-		    wait:60
-		}
+            action: "sound",
+            sound: snd_alarm,
+            wait: 0
+        }
 	]
 };
 
@@ -95,6 +81,14 @@ function run_scene_events()
             );
         }
     }
+	if (event.action == "sound")
+	{
+		audio_play_sound(
+		    event.sound,
+		    1,
+		    true
+		);
+	}
 
 
     if (event.action == "hide")
@@ -112,3 +106,9 @@ loaded = false;
 event_index = 0;
 event_wait = 0;
 events_running = false;
+alarm_clicked = false;
+alarm_timer = 0;
+calendar_shown = false;
+scene_fade = false;
+scene_fade_alpha = 0;
+scene_fade_state = 0;
