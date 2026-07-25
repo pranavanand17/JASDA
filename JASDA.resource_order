@@ -19,6 +19,7 @@
     {"name":"Characters","order":6,"path":"folders/Sprites/Characters.yy",},
     {"name":"AMBER","order":2,"path":"folders/Sprites/Characters/AMBER.yy",},
     {"name":"FELIX","order":4,"path":"folders/Sprites/Characters/FELIX.yy",},
+    {"name":"ARIEL","order":5,"path":"folders/Sprites/Characters/ARIEL.yy",},
     {"name":"JASDA","order":1,"path":"folders/Sprites/Characters/JASDA.yy",},
     {"name":"Environments","order":8,"path":"folders/Sprites/Environments.yy",},
     {"name":"Others","order":7,"path":"folders/Sprites/Others.yy",},
