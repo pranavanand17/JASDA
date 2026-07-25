@@ -1,4 +1,6 @@
-// Character slots
+// ==========================================
+// CHARACTER SLOTS
+// ==========================================
 
 characters =
 {
@@ -7,6 +9,10 @@ characters =
     right: noone
 };
 
+
+// ==========================================
+// POSITIONS
+// ==========================================
 
 positions =
 {
@@ -29,6 +35,11 @@ positions =
     }
 };
 
+
+// ==========================================
+// CREATE CHARACTER
+// ==========================================
+
 function create_character(_name, _sprite)
 {
     return
@@ -44,19 +55,25 @@ function create_character(_name, _sprite)
         visible: false,
 
         scale: 1.5,
-        alpha: 1,
-		visible: false,
 
-		fading_out: false,
-		fade_speed: 0.03,
+        alpha: 1,
+
+        fading_out: false,
+        fading_in: false,
+
+        fade_speed: 0.03,
 
         bob_offset: 0,
         bob_amount: 3,
-        bob_speed: 0.008,
-		fading_in: false,
-		fade_speed: 0.03,
+        bob_speed: 0.008
     };
 }
+
+
+// ==========================================
+// EXPRESSIONS
+// ==========================================
+
 expressions =
 {
     Jasda:
@@ -68,20 +85,30 @@ expressions =
     {
         default: sAmber_Idle
     },
-	
-	Felix:
-	{
-	    default: sFelix_Idle,
-	}
+
+    Felix:
+    {
+        default: sFelix_Idle
+    },
+
+    Ariel:
+    {
+        default: sAriel_Idle
+    }
 };
+
+
+// ==========================================
+// CHANGE EXPRESSION
+// ==========================================
 
 function change_expression(_character, _expression)
 {
     var data = expressions[$ _character.name];
 
-    if data != undefined
+    if (data != undefined)
     {
-        if data[$ _expression] != undefined
+        if (data[$ _expression] != undefined)
         {
             _character.sprite = data[$ _expression];
             _character.expression = _expression;
@@ -90,19 +117,47 @@ function change_expression(_character, _expression)
 }
 
 
-// Test character
+// ==========================================
+// CREATE CHARACTERS
+// ==========================================
 
-jasda = create_character("Jasda", sJasda_Idle);
+jasda = create_character(
+    "Jasda",
+    sJasda_Idle
+);
 
-amber = create_character("Amber", sAmber_Idle);
+amber = create_character(
+    "Amber",
+    sAmber_Idle
+);
 
-felix = create_character("Felix", sFelix_Idle);
+felix = create_character(
+    "Felix",
+    sFelix_Idle
+);
+
+ariel = create_character(
+    "Ariel",
+    sAriel_Idle
+);
+
+
+// ==========================================
+// CHARACTER DATABASE
+// ==========================================
 
 character_database =
 {
     Jasda: jasda,
-    Amber: amber
+    Amber: amber,
+    Felix: felix,
+    Ariel: ariel
 };
+
+
+// ==========================================
+// GET CHARACTER
+// ==========================================
 
 function get_character(_name)
 {
@@ -114,6 +169,11 @@ function get_character(_name)
     return noone;
 }
 
+
+// ==========================================
+// SHOW CHARACTER
+// ==========================================
+
 show_character = function(_character, _slot)
 {
     _character.visible = true;
@@ -121,50 +181,85 @@ show_character = function(_character, _slot)
     _character.x = positions[$ _slot].x;
     _character.y = positions[$ _slot].y;
 
-    // Reset fade values
+    // ==========================================
+    // CHARACTER OFFSETS
+    // ==========================================
+
+    if (_character.name == "Ariel")
+    {
+        _character.y += 480;
+    }
+
     _character.alpha = 0;
+
     _character.fading_out = false;
     _character.fading_in = true;
 
     characters[$ _slot] = _character;
 }
 
+
+// ==========================================
+// HIDE CHARACTER
+// ==========================================
+
 hide_character = function(_name)
 {
-    var slots = ["left", "center", "right"];
+    var slots =
+    [
+        "left",
+        "center",
+        "right"
+    ];
 
     for (var i = 0; i < array_length(slots); i++)
     {
         var slot = slots[i];
+
         var char = characters[$ slot];
 
         if (char != noone)
         {
             if (char.name == _name)
             {
-                // Start fading instead of instantly disappearing
                 char.fading_out = true;
             }
         }
     }
 }
-//show_character(jasda, "left");
 
-//show_character(amber, "right");
+
+// ==========================================
+// INITIAL STATE
+// ==========================================
 
 alarm[0] = room_speed * 3;
 
-// Currently speaking
 active_character = "";
+
 set_active_character("Jasda");
-change_expression(jasda,"default");
+
+change_expression(
+    jasda,
+    "default"
+);
 
 
+// ==========================================
+// ACTIVE SPEAKER
+// ==========================================
 
 function set_active_character(_name)
 {
     active_character = _name;
 }
 
+
+// ==========================================
+// DEBUG
+// ==========================================
+
 show_debug_message(jasda.name);
 show_debug_message(amber.name);
+show_debug_message(felix.name);
+show_debug_message(ariel.name);
