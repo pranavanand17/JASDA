@@ -61,6 +61,7 @@
     {"name":"sCourtyard","order":4,"path":"sprites/sCourtyard/sCourtyard.yy",},
     {"name":"sJasda_Idle","order":2,"path":"sprites/sJasda_Idle/sJasda_Idle.yy",},
     {"name":"sPencilBox","order":6,"path":"sprites/sPencilBox/sPencilBox.yy",},
+    {"name":"spr_Class_front","order":7,"path":"sprites/spr_Class_front/spr_Class_front.yy",},
     {"name":"spr_classroom","order":1,"path":"sprites/spr_classroom/spr_classroom.yy",},
     {"name":"spr_jasda_idle","order":1,"path":"sprites/spr_jasda_idle/spr_jasda_idle.yy",},
     {"name":"spr_room","order":2,"path":"sprites/spr_room/spr_room.yy",},
