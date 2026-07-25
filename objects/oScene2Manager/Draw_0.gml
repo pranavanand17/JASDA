@@ -1,5 +1,5 @@
 draw_sprite_stretched(
-    spr_classroom,
+    sCourtyard,
     0,
     0,
     0,

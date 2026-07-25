@@ -27,7 +27,41 @@ typing_speed = 20;
 
 function start_dialogue(_speaker, _text)
 {
-    speaker = _speaker;
+    // =========================
+    // SET SPEAKER
+    // =========================
+
+    if (_speaker == "MC" || _speaker == "{MC}")
+    {
+        if (variable_global_exists("player_name"))
+        {
+            speaker = global.player_name;
+        }
+        else
+        {
+            speaker = "MC";
+        }
+    }
+    else
+    {
+        speaker = _speaker;
+    }
+
+
+    // =========================
+    // REPLACE MC INSIDE TEXT
+    // =========================
+
+    if (variable_global_exists("player_name"))
+    {
+        _text = string_replace_all(
+            _text,
+            "{MC}",
+            global.player_name
+        );
+    }
+
+
     dialogue = _text;
 
     display_text = "";

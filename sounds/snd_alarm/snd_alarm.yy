@@ -15,7 +15,7 @@
   "name":"snd_alarm",
   "parent":{
     "name":"SFX",
-    "path":"folders/SFX.yy",
+    "path":"folders/Shaders/SFX.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
