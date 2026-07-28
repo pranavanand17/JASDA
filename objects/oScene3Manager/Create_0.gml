@@ -7,20 +7,17 @@
 // FIND MANAGERS
 // ==========================================
 
-vn_controller = instance_find(oVNController, 0);
-character_manager = instance_find(oCharacterManager, 0);
+vn_controller = instance_find(
+    oVNController,
+    0
+);
+
+character_manager = instance_find(
+    oCharacterManager,
+    0
+);
 
 vn_controller.scene_manager = id;
-
-
-// ==========================================
-// SCENE STATE
-// ==========================================
-
-scene_started = false;
-dialogue_started = false;
-
-dialogue_stage = "intro";
 
 
 // ==========================================
@@ -39,171 +36,162 @@ fade_speed = 0.03;
 
 
 // ==========================================
-// CLASSROOM TRANSITION
+// SCENE STATE
+// ==========================================
+
+scene_state = "intro";
+
+scene_started = false;
+dialogue_started = false;
+
+
+// ==========================================
+// TIMERS
+// ==========================================
+
+// First classroom shot
+intro_timer = room_speed * 4;
+
+// Bell duration
+clock_timer = 0;
+
+// Stay black before showing clock
+black_timer = 0;
+
+
+// ==========================================
+// CLOCK
+// ==========================================
+
+clock_active = false;
+clock_frame = 0;
+
+
+// ==========================================
+// DIALOGUE
+// ==========================================
+
+dialogue_stage = "";
+
+
+// ==========================================
+// TRANSITION
 // ==========================================
 
 transition_active = false;
 transition_alpha = 0;
-transition_state = 0;
+transition_direction = "";
 
 
 // ==========================================
-// WAIT TIMER
-// ==========================================
-
-wait_timer = room_speed * 4;
-
-
-// ==========================================
-// DIALOGUE FINISHED
+// DIALOGUE CALLBACK
 // ==========================================
 
 function dialogue_finished()
 {
-    // ==========================================
-    // INTRO
-    // ==========================================
-
-    if (dialogue_stage == "hello")
+    switch(dialogue_stage)
     {
-        dialogue_stage = "name";
+        case "hello":
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "My name's Ariel."
-        );
-    }
+            dialogue_stage = "name";
 
+            vn_controller.start_dialogue(
+                "Ariel",
+                "My name's Ariel."
+            );
 
-    // ==========================================
-    // NAME
-    // ==========================================
-
-    else if (dialogue_stage == "name")
-    {
-        dialogue_stage = "teacher";
-
-        vn_controller.start_dialogue(
-            "Ariel",
-            "I'll be your class teacher this school year."
-        );
-    }
+        break;
 
 
-    // ==========================================
-    // ENGLISH
-    // ==========================================
 
-    else if (dialogue_stage == "teacher")
-    {
-        dialogue_stage = "english";
+        case "name":
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "I'll also be teaching you English."
-        );
-    }
+            dialogue_stage = "teacher";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll be your class teacher this school year."
+            );
+
+        break;
 
 
-    // ==========================================
-    // HAPPY
-    // ==========================================
 
-    else if (dialogue_stage == "english")
-    {
-        dialogue_stage = "happy";
+        case "teacher":
 
-        character_manager.change_expression(
-            character_manager.ariel,
-            "default"
-        );
+            dialogue_stage = "english";
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "I hope to get along with all of you."
-        );
-    }
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll also be teaching you English."
+            );
+
+        break;
 
 
-    // ==========================================
-    // ...
-    // ==========================================
 
-    else if (dialogue_stage == "happy")
-    {
-        dialogue_stage = "ellipsis";
+        case "english":
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "..."
-        );
-    }
+            dialogue_stage = "hope";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I hope to get along with all of you."
+            );
+
+        break;
 
 
-    // ==========================================
-    // FREE PERIOD
-    // ==========================================
 
-    else if (dialogue_stage == "ellipsis")
-    {
-        dialogue_stage = "free_period";
+        case "hope":
 
-        character_manager.change_expression(
-            character_manager.ariel,
-            "default"
-        );
+            dialogue_stage = "pause";
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "I don't want to start class on the first day so you all can go back to what you were doing."
-        );
-    }
+            vn_controller.start_dialogue(
+                "Ariel",
+                "..."
+            );
+
+        break;
 
 
-    // ==========================================
-    // FINAL
-    // ==========================================
 
-    else if (dialogue_stage == "free_period")
-    {
-        dialogue_stage = "ending";
+        case "pause":
 
-        character_manager.change_expression(
-            character_manager.ariel,
-            "default"
-        );
+            dialogue_stage = "free";
 
-        vn_controller.start_dialogue(
-            "Ariel",
-            "This is a free period for all of you."
-        );
-    }
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I don't want to start class on the first day so you all can go back to what you were doing."
+            );
+
+        break;
 
 
-    // ==========================================
-    // FADE TO BLACK
-    // ==========================================
 
-   else if (dialogue_stage == "ending")
-   {
-       dialogue_stage = "scene_complete";
+        case "free":
 
-       // Fade Ariel out
-       character_manager.hide_character("Ariel");
+            dialogue_stage = "final";
 
-       // Fade screen out
-       transition_active = true;
-       transition_state = 3;
-       transition_alpha = 0;
-   }
+            vn_controller.start_dialogue(
+                "Ariel",
+                "This is a free period for all of you."
+            );
+
+        break;
 
 
-    // ==========================================
-    // COMPLETE
-    // ==========================================
 
-    else if (dialogue_stage == "scene_complete")
-    {
-        // Scene complete.
+        case "final":
+
+            character_manager.hide_character(
+                "Ariel"
+            );
+
+            transition_active = true;
+            transition_direction = "to_clock";
+            transition_alpha = 0;
+
+        break;
     }
 }

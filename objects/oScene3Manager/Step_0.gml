@@ -12,7 +12,7 @@ if (vn_controller == noone)
 
 
 // ==========================================
-// FADE IN
+// FADE FROM BLACK
 // ==========================================
 
 if (fade_alpha > 0)
@@ -22,44 +22,35 @@ if (fade_alpha > 0)
     if (fade_alpha < 0)
     {
         fade_alpha = 0;
+        scene_started = true;
     }
 }
 
 
 // ==========================================
-// START SCENE
-// ==========================================
-
-if (!scene_started && fade_alpha == 0)
-{
-    scene_started = true;
-}
-
-
-// ==========================================
-// WAIT BEFORE TRANSITION
+// INTRO SHOT
 // ==========================================
 
 if (
     scene_started &&
-    dialogue_stage == "intro"
+    scene_state == "intro"
 )
 {
-    wait_timer--;
+    intro_timer--;
 
-    if (wait_timer <= 0)
+    if (intro_timer <= 0)
     {
-        dialogue_stage = "transition";
+        scene_state = "fade_to_class";
 
         transition_active = true;
-        transition_state = 1;
+        transition_direction = "fade_out";
         transition_alpha = 0;
     }
 }
 
 
 // ==========================================
-// CLASSROOM TRANSITION
+// TRANSITIONS
 // ==========================================
 
 if (transition_active)
@@ -68,7 +59,7 @@ if (transition_active)
     // FADE OUT
     // ======================================
 
-    if (transition_state == 1)
+    if (transition_direction == "fade_out")
     {
         transition_alpha += 0.03;
 
@@ -76,7 +67,7 @@ if (transition_active)
         {
             transition_alpha = 1;
 
-            current_background = spr_classroom;
+            current_background = sClassroom_front;
 
             character_manager.show_character(
                 character_manager.ariel,
@@ -87,20 +78,71 @@ if (transition_active)
                 "Ariel"
             );
 
-            character_manager.change_expression(
-                character_manager.ariel,
-                "default"
-            );
+            dialogue_stage = "hello";
+            scene_state = "classroom";
 
-            transition_state = 2;
+            transition_direction = "fade_in";
         }
     }
+
+
+    // ======================================
+    // FADE TO CLOCK
+    // ======================================
+
+    else if (transition_direction == "to_clock")
+    {
+        transition_alpha += 0.03;
+
+        if (transition_alpha >= 1)
+        {
+            transition_alpha = 1;
+
+            // Stay black for 2 seconds
+            black_timer = room_speed * 2;
+
+            transition_direction = "wait_black";
+        }
+    }
+
+
+    // ======================================
+    // HOLD BLACK
+    // ======================================
+
+    else if (transition_direction == "wait_black")
+    {
+        black_timer--;
+
+        if (black_timer <= 0)
+        {
+            current_background = sClock;
+
+            clock_active = true;
+            clock_frame = 0;
+
+            clock_timer = ceil(
+                audio_sound_length(
+                    snd_school_bell
+                ) * room_speed
+            );
+
+            audio_play_sound(
+                snd_school_bell,
+                1,
+                false
+            );
+
+            transition_direction = "fade_in";
+        }
+    }
+
 
     // ======================================
     // FADE IN
     // ======================================
 
-    else if (transition_state == 2)
+    else if (transition_direction == "fade_in")
     {
         transition_alpha -= 0.03;
 
@@ -110,11 +152,12 @@ if (transition_active)
 
             transition_active = false;
 
-            if (!dialogue_started)
+            if (
+                scene_state == "classroom" &&
+                !dialogue_started
+            )
             {
                 dialogue_started = true;
-
-                dialogue_stage = "hello";
 
                 vn_controller.start_dialogue(
                     "Ariel",
@@ -126,10 +169,10 @@ if (transition_active)
 
 
     // ======================================
-    // FINAL FADE OUT
+    // FINAL FADE
     // ======================================
 
-    else if (transition_state == 3)
+    else if (transition_direction == "scene_end")
     {
         transition_alpha += 0.03;
 
@@ -137,21 +180,36 @@ if (transition_active)
         {
             transition_alpha = 1;
 
-        // Remove Ariel once the screen is fully black
-            character_manager.hide_character("Ariel");
-
-            transition_state = 4;
+            // Scene 4 later
         }
     }
+}
 
 
-    // ======================================
-    // SCENE COMPLETE
-    // ======================================
+// ==========================================
+// CLOCK
+// ==========================================
 
-    else if (transition_state == 4)
+if (clock_active)
+{
+    clock_timer--;
+
+    // Change frame after 1 second
+    if (
+        clock_timer ==
+        ceil(audio_sound_length(snd_school_bell) * room_speed) - room_speed
+    )
     {
-        // Scene 3 finished.
-        // Add Scene 4 here later.
+        clock_frame = 1;
+    }
+
+    // Bell finished
+    if (clock_timer <= 0)
+    {
+        clock_active = false;
+
+        transition_active = true;
+        transition_direction = "scene_end";
+        transition_alpha = 0;
     }
 }

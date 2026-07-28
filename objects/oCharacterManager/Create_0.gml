@@ -93,7 +93,8 @@ expressions =
 
     Ariel:
     {
-        default: sAriel_Idle
+        default: sAriel_Idle,
+		smoking: sAriel_smoking
     }
 };
 
