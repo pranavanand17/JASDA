@@ -1,5 +1,5 @@
 // ==========================================
-// SCENE 3 MANAGER
+// SCENE 3
 // ==========================================
 
 
@@ -7,22 +7,23 @@
 // FIND MANAGERS
 // ==========================================
 
-vn_controller = instance_find(oVNController, 0);
-character_manager = instance_find(oCharacterManager, 0);
+vn_controller = instance_find(
+    oVNController,
+    0
+);
 
+character_manager = instance_find(
+    oCharacterManager,
+    0
+);
 
-// ==========================================
-// SCENE STATE
-// ==========================================
-
-scene_stage = "fade_in";
+vn_controller.scene_manager = id;
 
 
 // ==========================================
 // BACKGROUND
 // ==========================================
 
-// First-person view from MC's seat
 current_background = sClassroom_LastBench;
 
 
@@ -32,21 +33,45 @@ current_background = sClassroom_LastBench;
 
 fade_alpha = 1;
 fade_speed = 0.03;
-fade_active = true;
 
 
 // ==========================================
-// SCENE START
+// SCENE STATE
 // ==========================================
+
+scene_state = "intro";
 
 scene_started = false;
+dialogue_started = false;
+
+
+// ==========================================
+// TIMERS
+// ==========================================
+
+// First classroom shot
+intro_timer = room_speed * 4;
+
+// Bell duration
+clock_timer = 0;
+
+// Stay black before showing clock
+black_timer = 0;
+
+
+// ==========================================
+// CLOCK
+// ==========================================
+
+clock_active = false;
+clock_frame = 0;
 
 
 // ==========================================
 // DIALOGUE
 // ==========================================
 
-dialogue_started = false;
+dialogue_stage = "";
 
 
 // ==========================================
@@ -55,13 +80,118 @@ dialogue_started = false;
 
 transition_active = false;
 transition_alpha = 0;
-transition_state = 0;
+transition_direction = "";
 
 
 // ==========================================
-// END FADE
+// DIALOGUE CALLBACK
 // ==========================================
 
-end_fade = false;
-end_fade_alpha = 0;
-end_fade_state = 0;
+function dialogue_finished()
+{
+    switch(dialogue_stage)
+    {
+        case "hello":
+
+            dialogue_stage = "name";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "My name's Ariel."
+            );
+
+        break;
+
+
+
+        case "name":
+
+            dialogue_stage = "teacher";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll be your class teacher this school year."
+            );
+
+        break;
+
+
+
+        case "teacher":
+
+            dialogue_stage = "english";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll also be teaching you English."
+            );
+
+        break;
+
+
+
+        case "english":
+
+            dialogue_stage = "hope";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I hope to get along with all of you."
+            );
+
+        break;
+
+
+
+        case "hope":
+
+            dialogue_stage = "pause";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "..."
+            );
+
+        break;
+
+
+
+        case "pause":
+
+            dialogue_stage = "free";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I don't want to start class on the first day so you all can go back to what you were doing."
+            );
+
+        break;
+
+
+
+        case "free":
+
+            dialogue_stage = "final";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "This is a free period for all of you."
+            );
+
+        break;
+
+
+
+        case "final":
+
+            character_manager.hide_character(
+                "Ariel"
+            );
+
+            transition_active = true;
+            transition_direction = "to_clock";
+            transition_alpha = 0;
+
+        break;
+    }
+}

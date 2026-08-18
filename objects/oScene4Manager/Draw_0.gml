@@ -2,33 +2,18 @@
 // DRAW BACKGROUND
 // ==========================================
 
-if (current_background != noone)
-{
-    if (current_background == sClock)
-    {
-        draw_sprite_stretched(
-            current_background,
-            clock_frame,
-            0,
-            0,
-            display_get_gui_width(),
-            display_get_gui_height()
-        );
-    }
-    else
-    {
-        draw_sprite(
-            current_background,
-            0,
-            0,
-            0
-        );
-    }
-}
+draw_sprite_stretched(
+    current_background,
+    0,
+    0,
+    0,
+    room_width,
+    room_height
+);
 
 
 // ==========================================
-// INITIAL FADE
+// FADE IN
 // ==========================================
 
 if (fade_alpha > 0)
@@ -49,7 +34,7 @@ if (fade_alpha > 0)
 
 
 // ==========================================
-// TRANSITION FADE
+// FADE OUT
 // ==========================================
 
 if (transition_active)

@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"snd_alarm",
+  "%Name":"snd_school_bell",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":7.08,
+  "duration":10.06,
   "exportDir":"",
-  "name":"snd_alarm",
+  "name":"snd_school_bell",
   "parent":{
     "name":"SFX",
     "path":"folders/SFX.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_alarm.mp3",
+  "soundFile":"snd_school_bell.mp3",
   "volume":1.0,
 }
