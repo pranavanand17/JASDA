@@ -51,23 +51,6 @@ for (var i = 0; i < array_length(slots); i++)
 
 
         // ==========================================
-        // ACTIVE CHARACTER HIGHLIGHT
-        // ==========================================
-
-        if (!char.fading_in && !char.fading_out)
-        {
-            if (char.name == active_character)
-            {
-                char.alpha = 1;
-            }
-            else
-            {
-                char.alpha = 0.5;
-            }
-        }
-
-
-        // ==========================================
         // DRAW CHARACTER
         // ==========================================
 
@@ -77,7 +60,7 @@ for (var i = 0; i < array_length(slots); i++)
                 char.sprite,
                 0,
                 char.x,
-                char.y - char.bob_offset,
+                char.y,
                 char.scale,
                 char.scale,
                 0,

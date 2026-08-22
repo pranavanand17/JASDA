@@ -54,6 +54,11 @@ function create_character(_name, _sprite)
 
         visible: false,
 
+        // ==========================================
+        // SCALE
+        // ==========================================
+
+        base_scale: 1.5,
         scale: 1.5,
 
         alpha: 1,
@@ -61,11 +66,7 @@ function create_character(_name, _sprite)
         fading_out: false,
         fading_in: false,
 
-        fade_speed: 0.03,
-
-        bob_offset: 0,
-        bob_amount: 3,
-        bob_speed: 0.008
+        fade_speed: 0.03
     };
 }
 
@@ -94,7 +95,7 @@ expressions =
     Ariel:
     {
         default: sAriel_Idle,
-		smoking: sAriel_smoking
+        smoking: sAriel_smoking
     }
 };
 
@@ -191,13 +192,16 @@ show_character = function(_character, _slot)
         _character.y += 480;
     }
 
+    // Reset scale when character appears
+    _character.scale = _character.base_scale;
+
     _character.alpha = 0;
 
     _character.fading_out = false;
     _character.fading_in = true;
 
     characters[$ _slot] = _character;
-}
+};
 
 
 // ==========================================
@@ -227,7 +231,7 @@ hide_character = function(_name)
             }
         }
     }
-}
+};
 
 
 // ==========================================
