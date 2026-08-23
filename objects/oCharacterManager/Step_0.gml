@@ -13,6 +13,21 @@ for (var i = 0; i < array_length(slots); i++)
     if (char != noone)
     {
         // ==========================================
+        // GET CURRENT EXPRESSION DATA
+        // ==========================================
+
+        var expression_data = expressions[$ char.name];
+
+        var current_expression = expression_data[$ char.expression];
+
+        // ==========================================
+        // GET SPRITE SCALE
+        // ==========================================
+
+        var normal_scale = current_expression.scale;
+
+
+        // ==========================================
         // MC IS TALKING
         // ==========================================
 
@@ -20,7 +35,10 @@ for (var i = 0; i < array_length(slots); i++)
         {
             // Don't change anyone's scale.
             // MC has no character sprite.
+
+            char.target_scale = normal_scale;
         }
+
 
         // ==========================================
         // CHARACTER IS TALKING
@@ -30,14 +48,26 @@ for (var i = 0; i < array_length(slots); i++)
         {
             if (char.name == active_character)
             {
-                char.target_scale = 1.5;
+                // ==========================================
+                // TALKING CHARACTER
+                // ==========================================
+
+                char.target_scale = normal_scale;
             }
             else
             {
-                char.target_scale = 1.425;
+                // ==========================================
+                // NON-TALKING CHARACTER
+                // ==========================================
+
+                char.target_scale = normal_scale * 0.95;
             }
 
-            // Smooth zoom
+
+            // ==========================================
+            // SMOOTH SCALE CHANGE
+            // ==========================================
+
             char.scale = lerp(
                 char.scale,
                 char.target_scale,

@@ -60,6 +60,7 @@ function create_character(_name, _sprite)
 
         base_scale: 1.5,
         scale: 1.5,
+        target_scale: 1.5,
 
         alpha: 1,
 
@@ -70,7 +71,6 @@ function create_character(_name, _sprite)
     };
 }
 
-
 // ==========================================
 // EXPRESSIONS
 // ==========================================
@@ -79,26 +79,80 @@ expressions =
 {
     Jasda:
     {
-        default: sJasda_Idle
+        // 900x1058
+        default:
+        {
+            sprite: sJasda_New,
+            scale: 1.03
+        },
+
+		// 600x700
+        new_idle:
+        {
+            
+			sprite: sJasda_Idle,
+            scale: 1.5
+        }
     },
 
     Amber:
     {
-        default: sAmber_Idle
+        // 600x700
+        default:
+        {
+            sprite: sAmber_Idle,
+            scale: 1.5
+        },
+
+        // 900x1058
+        new_idle:
+        {
+            sprite: sAmber_New,
+            scale: 0.85
+        }
     },
 
     Felix:
     {
-        default: sFelix_Idle
+        // 600x700
+        default:
+        {
+            sprite: sFelix_Idle,
+            scale: 1.5
+        },
+
+        // 900x1058
+        new_idle:
+        {
+            sprite: sFelix_New,
+            scale: 0.85
+        }
     },
 
     Ariel:
     {
-        default: sAriel_Idle,
-        smoking: sAriel_smoking
+        // 600x700
+        default:
+        {
+            sprite: sAriel_Idle,
+            scale: 1.5
+        },
+
+        // 900x1058
+        new_idle:
+        {
+            sprite: sAriel_New,
+            scale: 0.85
+        },
+
+        // Old smoking sprite
+        smoking:
+        {
+            sprite: sAriel_smoking,
+            scale: 1.5
+        }
     }
 };
-
 
 // ==========================================
 // CHANGE EXPRESSION
@@ -110,14 +164,22 @@ function change_expression(_character, _expression)
 
     if (data != undefined)
     {
-        if (data[$ _expression] != undefined)
+        var expression_data = data[$ _expression];
+
+        if (expression_data != undefined)
         {
-            _character.sprite = data[$ _expression];
+            // Change sprite
+            _character.sprite = expression_data.sprite;
+
+            // Change scale based on this sprite
+            _character.base_scale = expression_data.scale;
+            _character.scale = expression_data.scale;
+
+            // Save expression name
             _character.expression = _expression;
         }
     }
 }
-
 
 // ==========================================
 // CREATE CHARACTERS
@@ -125,7 +187,7 @@ function change_expression(_character, _expression)
 
 jasda = create_character(
     "Jasda",
-    sJasda_Idle
+    sJasda_New
 );
 
 amber = create_character(
@@ -192,8 +254,16 @@ show_character = function(_character, _slot)
         _character.y += 480;
     }
 
-    // Reset scale when character appears
+    // ==========================================
+    // RESET SCALE
+    // ==========================================
+
     _character.scale = _character.base_scale;
+    _character.target_scale = _character.base_scale;
+
+    // ==========================================
+    // FADE IN
+    // ==========================================
 
     _character.alpha = 0;
 
