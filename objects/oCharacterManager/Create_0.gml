@@ -97,35 +97,36 @@ expressions =
 
     Amber:
     {
-        // 600x700
+        // 900x1058
         default:
         {
-            sprite: sAmber_Idle,
-            scale: 1.5
+            sprite: sAmber_New,
+            scale: 1.03
         },
 
-        // 900x1058
+		// 600x700
         new_idle:
         {
-            sprite: sAmber_New,
-            scale: 0.85
+			sprite: sAmber_Idle,
+            scale: 1.5
         }
     },
 
     Felix:
     {
-        // 600x700
+        // 900x1058
         default:
         {
-            sprite: sFelix_Idle,
-            scale: 1.5
+            sprite: sFelix_New,
+            scale: 1.03
+            
         },
-
-        // 900x1058
+        
+		// 600x700
         new_idle:
         {
-            sprite: sFelix_New,
-            scale: 0.85
+			sprite: sFelix_Idle,
+            scale: 1.5
         }
     },
 
