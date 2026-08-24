@@ -1,5 +1,5 @@
 // ==========================================
-// SCENE 11
+// SCENE 18
 // ==========================================
 
 // ==========================================
@@ -32,7 +32,7 @@ if (vn_controller != noone)
 // ==========================================
 
 // CHANGE THIS TO YOUR ACTUAL CLASSROOM SPRITE
-current_background = sClubroom;
+current_background = spr_classroom_bg;
 
 
 // ==========================================
