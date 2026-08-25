@@ -173,9 +173,15 @@ switch (door_state)
         if (door_fade_alpha >= 1)
         {
             door_fade_alpha = 1;
-
+			
+			// Stop doorbell
+		    if (audio_is_playing(doorbell_sound))
+		    {
+		        audio_stop_sound(doorbell_sound);
+		    }
             // Scene finished.
             // Keep screen black for now.
+			room_goto(rm_scene1_3)
         }
 
     break;

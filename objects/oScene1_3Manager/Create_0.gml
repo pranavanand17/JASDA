@@ -1,51 +1,41 @@
 // ==========================================
-// DOOR SCENE STATE
+// DOOR FINAL SCENE
 // ==========================================
 
-// 1 = fade into Door 1
-// 2 = hold Door 1
-// 3 = transition to Door 2
-// 4 = hold Door 2
-// 5 = transition to Door 3
-// 6 = hold Door 3
-// 7 = fade to black
-
-door_state = 1;
+current_background = sDoorFinal;
 
 
 // ==========================================
-// CURRENT BACKGROUND
+// DOOR HANDLE
 // ==========================================
 
-current_background = sDoorClose1;
+door_handle = noone;
 
 
 // ==========================================
 // FADE
 // ==========================================
 
+door_fade = true;
+door_fade_state = 1;
 door_fade_alpha = 1;
 
 door_fade_speed = 0.05;
 
 
 // ==========================================
-// TIMERS
+// STATE
 // ==========================================
 
-door_timer = 0;
+// 0 = fading into door
+// 1 = waiting for handle click
+// 2 = fading to classroom
+// 3 = finished
 
-
-// ==========================================
-// HOLD TIMES
-// ==========================================
-
-door_hold_time = room_speed * 2.5;
-
-final_hold_time = room_speed * 2.5;
+door_state = 0;
 
 // ==========================================
-// DOOR SCENE SOUND
+// DOOR SOUND
 // ==========================================
 
 doorbell_sound = audio_play_sound(
@@ -53,3 +43,5 @@ doorbell_sound = audio_play_sound(
     1,
     true
 );
+
+door_sound_playing = false;
