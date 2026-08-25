@@ -239,3 +239,10 @@ dialogue_started = false;
 
 scene_ending = false;
 end_fade_alpha = 0;
+
+// ==========================================
+// DIALOGUE STATE
+// ==========================================
+
+dialogue_started = false;
+dialogue_has_been_active = false;

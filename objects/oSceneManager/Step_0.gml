@@ -149,7 +149,6 @@ if (
     }
 }
 
-
 // ==========================================
 // WAIT FOR DIALOGUE TO FINISH
 // ==========================================
@@ -157,19 +156,32 @@ if (
 if (
     dialogue_started &&
     !scene_ending &&
-    vn_controller != noone &&
-    vn_controller.dialogue_active == false
+    vn_controller != noone
 )
 {
     // --------------------------------------
-    // DIALOGUE WAS CLOSED
+    // WAIT UNTIL DIALOGUE IS ACTUALLY ACTIVE
     // --------------------------------------
 
-    scene_ending = true;
+    if (vn_controller.dialogue_active)
+    {
+        dialogue_has_been_active = true;
+    }
 
-    end_fade_alpha = 0;
+
+    // --------------------------------------
+    // DIALOGUE WAS ACTUALLY FINISHED
+    // --------------------------------------
+
+    if (
+        dialogue_has_been_active &&
+        !vn_controller.dialogue_active
+    )
+    {
+        scene_ending = true;
+        end_fade_alpha = 0;
+    }
 }
-
 
 // ==========================================
 // FADE TO BLACK
@@ -183,11 +195,6 @@ if (scene_ending)
     {
         end_fade_alpha = 1;
 
-        // --------------------------------------
-        // SCENE IS FINISHED
-        // --------------------------------------
-
-        // Keep screen black.
-        // Next scene/room can be triggered later.
+        room_goto(rm_scene1_1);
     }
 }

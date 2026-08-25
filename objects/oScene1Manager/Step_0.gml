@@ -5,7 +5,6 @@
 if (!loaded)
 {
     current_scene = scene_table;
-
     loaded = true;
 }
 
@@ -28,7 +27,6 @@ if (!table_objects_spawned)
 {
     table_objects_spawned = true;
 
-
     // --------------------------------------
     // BAG
     // --------------------------------------
@@ -39,7 +37,6 @@ if (!table_objects_spawned)
         "Instances",
         oBag
     );
-
 
     // --------------------------------------
     // BOOKS
@@ -52,7 +49,6 @@ if (!table_objects_spawned)
         oBooks
     );
 
-
     // --------------------------------------
     // PENCIL BOX
     // --------------------------------------
@@ -63,7 +59,6 @@ if (!table_objects_spawned)
         "Instances",
         oPencilBox
     );
-
 
     // --------------------------------------
     // START INVISIBLE
@@ -240,10 +235,7 @@ if (
     {
         bag_alpha = 0;
 
-        instance_destroy(
-            bag_instance
-        );
-
+        instance_destroy(bag_instance);
         bag_instance = noone;
     }
     else
@@ -268,10 +260,7 @@ if (
     {
         books_alpha = 0;
 
-        instance_destroy(
-            books_instance
-        );
-
+        instance_destroy(books_instance);
         books_instance = noone;
     }
     else
@@ -296,10 +285,7 @@ if (
     {
         pencilbox_alpha = 0;
 
-        instance_destroy(
-            pencilbox_instance
-        );
-
+        instance_destroy(pencilbox_instance);
         pencilbox_instance = noone;
     }
     else
@@ -326,6 +312,10 @@ if (
 {
     table_objects_finished = true;
 
+    // --------------------------------------
+    // START SHORT WAIT
+    // --------------------------------------
+
     dialogue_delay_active = true;
     dialogue_delay_timer = 0;
 }
@@ -345,14 +335,20 @@ if (
     if (dialogue_delay_timer >= room_speed)
     {
         dialogue_delay_active = false;
+
         table_dialogue_started = true;
 
+        // IMPORTANT:
+        // Dialogue has not actually become active yet.
+        // The VN controller has its own small pending delay.
+
+        table_dialogue_has_been_active = false;
 
         if (vn_controller != noone)
         {
             vn_controller.start_dialogue(
-                "{MC}",             
-				"Amber's not gonna let me hear the end of this"
+                "{MC}",
+                "Amber's not gonna let me hear the end of this"
             );
         }
     }
@@ -360,19 +356,37 @@ if (
 
 
 // ==========================================
-// DIALOGUE FINISHED
+// WAIT FOR DIALOGUE TO ACTUALLY START
 // ==========================================
 
 if (
     table_dialogue_started &&
-    !dialogue_delay_active &&
     !scene_ending &&
-    vn_controller != noone &&
-    vn_controller.dialogue_active == false
+    vn_controller != noone
 )
 {
-    scene_ending = true;
-    end_fade_alpha = 0;
+    // --------------------------------------
+    // DIALOGUE IS NOW ACTUALLY VISIBLE
+    // --------------------------------------
+
+    if (vn_controller.dialogue_active)
+    {
+        table_dialogue_has_been_active = true;
+    }
+
+
+    // --------------------------------------
+    // DIALOGUE HAS BEEN CLOSED
+    // --------------------------------------
+
+    if (
+        table_dialogue_has_been_active &&
+        !vn_controller.dialogue_active
+    )
+    {
+        scene_ending = true;
+        end_fade_alpha = 0;
+    }
 }
 
 
@@ -387,5 +401,9 @@ if (scene_ending)
     if (end_fade_alpha >= 1)
     {
         end_fade_alpha = 1;
+
+		room_goto(rm_scene1_2)
+        // Keep screen black.
+        // Next room can be added here later.
     }
 }

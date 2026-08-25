@@ -1,19 +1,33 @@
-// Draw logo
+// ==========================================
+// DRAW LOGO
+// ==========================================
+
 draw_set_alpha(logo_alpha);
 
-draw_sprite(
+draw_sprite_ext(
     sStudioLogo,
     0,
-    room_width / 3.4,
-    room_height / 5
+    420,
+    50,
+    2,
+    2,
+    0,
+    c_white,
+    1
 );
 
 
-// Reset
+// ==========================================
+// RESET
+// ==========================================
+
 draw_set_alpha(1);
 
 
-// Black fade overlay
+// ==========================================
+// BLACK FADE OVERLAY
+// ==========================================
+
 draw_set_alpha(fade_alpha);
 
 draw_set_color(c_black);
@@ -21,10 +35,15 @@ draw_set_color(c_black);
 draw_rectangle(
     0,
     0,
-    room_width,
-    room_height,
+    1920,
+    1080,
     false
 );
 
 
+// ==========================================
+// RESET
+// ==========================================
+
 draw_set_alpha(1);
+draw_set_color(c_white);

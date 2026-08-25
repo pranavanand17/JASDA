@@ -100,7 +100,7 @@ text_y = box_y + 100;
 fade_alpha = 1;
 fade_speed = 0.005;
 
-dialogue_delay = 2 * room_speed;
+dialogue_delay = 1* room_speed;
 dialogue_delay_timer = 0;
 dialogue_pending = false;
 
@@ -138,3 +138,9 @@ function start_choice(_options)
 }
 
 scene_manager = noone;
+
+// ==========================================
+// FULLSCREEN
+// ==========================================
+
+fullscreen = window_get_fullscreen();
