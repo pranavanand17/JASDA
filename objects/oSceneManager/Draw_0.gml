@@ -38,33 +38,13 @@ if (scene_fade)
 
 
 // ==========================================
-// TABLE FADE
+// END SCENE FADE
 // ==========================================
 
-if (table_fade)
+if (scene_ending)
 {
     draw_set_color(c_black);
-    draw_set_alpha(table_fade_alpha);
-
-    draw_rectangle(
-        0,
-        0,
-        display_get_gui_width(),
-        display_get_gui_height(),
-        false
-    );
-
-    draw_set_alpha(1);
-}
-
-// ==========================================
-// NEXT BACKGROUND FADE
-// ==========================================
-
-if (next_fade)
-{
-    draw_set_color(c_black);
-    draw_set_alpha(next_fade_alpha);
+    draw_set_alpha(end_fade_alpha);
 
     draw_rectangle(
         0,

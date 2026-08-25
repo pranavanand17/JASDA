@@ -1,14 +1,44 @@
-if (mouse_check_button_pressed(mb_left))
+// ==========================================
+// CLICK BAG
+// ==========================================
+
+if (
+    mouse_check_button_pressed(mb_left) &&
+    !fading_out &&
+    position_meeting(mouse_x, mouse_y, id)
+)
 {
-    if (point_in_rectangle(
-        mouse_x,
-        mouse_y,
-        bbox_left,
-        bbox_top,
-        bbox_right,
-        bbox_bottom
-    ))
+    fading_out = true;
+}
+
+
+// ==========================================
+// FADE OUT
+// ==========================================
+
+if (fading_out)
+{
+    image_alpha -= fade_speed;
+
+    if (image_alpha <= 0)
     {
+        image_alpha = 0;
+
+        // --------------------------------------
+        // TELL SCENE MANAGER
+        // --------------------------------------
+
+        var manager = instance_find(
+            oScene1Manager,
+            0
+        );
+
+        if (manager != noone)
+        {
+            manager.bag_collected = true;
+            manager.bag_instance = noone;
+        }
+
         instance_destroy();
     }
 }

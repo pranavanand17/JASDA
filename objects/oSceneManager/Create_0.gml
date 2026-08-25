@@ -2,7 +2,10 @@
 // CHARACTER MANAGER
 // ==========================================
 
-char_manager = instance_find(oCharacterManager, 0);
+char_manager = instance_find(
+    oCharacterManager,
+    0
+);
 
 
 // ==========================================
@@ -52,11 +55,17 @@ function load_scene(_scene)
 
 function load_scene_characters()
 {
-    for (var i = 0; i < array_length(current_scene.characters); i++)
+    for (
+        var i = 0;
+        i < array_length(current_scene.characters);
+        i++
+    )
     {
         var data = current_scene.characters[i];
 
-        var character = char_manager.get_character(data.name);
+        var character = char_manager.get_character(
+            data.name
+        );
 
         if (character != noone)
         {
@@ -80,13 +89,28 @@ function run_scene_events()
         return;
     }
 
+
+    // --------------------------------------
+    // WAIT
+    // --------------------------------------
+
     if (event_wait > 0)
     {
         event_wait--;
         return;
     }
 
+
+    // --------------------------------------
+    // GET EVENTS
+    // --------------------------------------
+
     var events = current_scene.events;
+
+
+    // --------------------------------------
+    // ALL EVENTS FINISHED
+    // --------------------------------------
 
     if (event_index >= array_length(events))
     {
@@ -94,7 +118,17 @@ function run_scene_events()
         return;
     }
 
+
+    // --------------------------------------
+    // CURRENT EVENT
+    // --------------------------------------
+
     var event = events[event_index];
+
+
+    // ======================================
+    // SHOW CHARACTER
+    // ======================================
 
     if (event.action == "show")
     {
@@ -111,6 +145,11 @@ function run_scene_events()
         }
     }
 
+
+    // ======================================
+    // PLAY SOUND
+    // ======================================
+
     if (event.action == "sound")
     {
         audio_play_sound(
@@ -120,6 +159,11 @@ function run_scene_events()
         );
     }
 
+
+    // ======================================
+    // HIDE CHARACTER
+    // ======================================
+
     if (event.action == "hide")
     {
         char_manager.hide_character(
@@ -127,7 +171,17 @@ function run_scene_events()
         );
     }
 
+
+    // ======================================
+    // EVENT WAIT
+    // ======================================
+
     event_wait = event.wait;
+
+
+    // ======================================
+    // NEXT EVENT
+    // ======================================
 
     event_index++;
 }
@@ -141,6 +195,7 @@ loaded = false;
 
 event_index = 0;
 event_wait = 0;
+
 events_running = false;
 
 
@@ -150,19 +205,12 @@ events_running = false;
 
 alarm_clicked = false;
 alarm_timer = 0;
+
 calendar_shown = false;
 
 
 // ==========================================
-// CALENDAR TRANSITION
-// ==========================================
-
-scene_fade = false;
-scene_fade_alpha = 0;
-scene_fade_state = 0;
-
-// ==========================================
-// CALENDAR FADE
+// ROOM → CALENDAR TRANSITION
 // ==========================================
 
 scene_fade = false;
@@ -171,47 +219,23 @@ scene_fade_state = 0;
 
 
 // ==========================================
-// TABLE TRANSITION
+// CALENDAR HOLD
 // ==========================================
 
-table_fade = false;
-table_fade_state = 0;
-table_fade_alpha = 0;
-
-table_fade_ready = false;
-table_fade_done = false;
-
-// ==========================================
-// TABLE OBJECTS
-// ==========================================
-
-table_objects_spawned = false;
-
-bag_instance = noone;
-pencilbox_instance = noone;
-books_instance = noone;
-
-bag_collected = false;
-pencilbox_collected = false;
-books_collected = false;
-
-collection_dialogue_started = false;
+calendar_hold = false;
+calendar_hold_timer = 0;
 
 
 // ==========================================
-// OBJECT COLLECTION DIALOGUE
+// DIALOGUE
 // ==========================================
 
-collection_dialogue_started = false;
+dialogue_started = false;
 
 
 // ==========================================
-// NEXT BACKGROUND FADE
+// END SCENE FADE
 // ==========================================
 
-next_fade = false;
-next_fade_state = 0;
-next_fade_alpha = 0;
-
-next_background = sTable;
-
+scene_ending = false;
+end_fade_alpha = 0;

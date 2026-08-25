@@ -1,8 +1,8 @@
 // ==========================================
-// BOOKS
+// FADE SETTINGS
 // ==========================================
 
-picked_up = false;
-image_alpha = 0;
-fade_in = true;
-fade_speed = 0.03;
+image_alpha = 1;
+
+fading_out = false;
+fade_speed = 0.05;
