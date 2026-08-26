@@ -77,7 +77,7 @@ if (transition_active)
     {
         transition_alpha = 1;
 
-        // Scene 6 goes here later.
+        room_goto(rm_scene6);
         // Keep the screen black.
     }
 }

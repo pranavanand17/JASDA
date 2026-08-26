@@ -38,6 +38,6 @@ if (keyboard_check_pressed(vk_enter))
     {
         global.player_name = input_text;
 
-        room_goto(rm_scene1);
+        room_goto(rm_scene2);
     }
 }

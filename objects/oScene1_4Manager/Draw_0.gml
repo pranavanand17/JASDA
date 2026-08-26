@@ -2,14 +2,17 @@
 // DRAW BACKGROUND
 // ==========================================
 
-draw_sprite_stretched(
-    current_background,
-    0,
-    0,
-    0,
-    room_width,
-    room_height
-);
+if (current_background != noone)
+{
+    draw_sprite_stretched(
+        current_background,
+        0,
+        0,
+        0,
+        display_get_gui_width(),
+        display_get_gui_height()
+    );
+}
 
 
 // ==========================================
@@ -34,13 +37,13 @@ if (fade_alpha > 0)
 
 
 // ==========================================
-// FINAL FADE
+// FINAL FADE TO BLACK
 // ==========================================
 
-if (transition_active)
+if (scene_ending)
 {
     draw_set_color(c_black);
-    draw_set_alpha(transition_alpha);
+    draw_set_alpha(end_fade_alpha);
 
     draw_rectangle(
         0,

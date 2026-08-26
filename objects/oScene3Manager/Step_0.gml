@@ -211,5 +211,7 @@ if (clock_active)
         transition_active = true;
         transition_direction = "scene_end";
         transition_alpha = 0;
+		
+		room_goto(rm_scene4);
     }
 }

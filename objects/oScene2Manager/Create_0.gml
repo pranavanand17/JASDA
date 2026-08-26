@@ -2,9 +2,50 @@
 // SCENE 2
 // ==========================================
 
-// Fade
+
+// ==========================================
+// FIND MANAGERS
+// ==========================================
+
+vn_controller = instance_find(
+    oVNController,
+    0
+);
+
+character_manager = instance_find(
+    oCharacterManager,
+    0
+);
+
+choice_controller = instance_find(
+    oChoiceController,
+    0
+);
+
+
+// ==========================================
+// CONNECT VN CONTROLLER
+// ==========================================
+
+if (vn_controller != noone)
+{
+    vn_controller.scene_manager = id;
+}
+
+
+// ==========================================
+// BACKGROUND
+// ==========================================
+
+current_background = sCourtyard;
+
+
+// ==========================================
+// FADE IN
+// ==========================================
+
 fade_alpha = 1;
-fade_speed = 0.005;
+fade_speed = 0.03;
 
 
 // ==========================================
@@ -13,165 +54,25 @@ fade_speed = 0.005;
 
 scene_started = false;
 dialogue_started = false;
-choice_started = false;
 
 dialogue_stage = "intro";
 
 
 // ==========================================
-// FIND MANAGERS
+// TRANSITION
 // ==========================================
 
-vn_controller = instance_find(oVNController, 0);
-character_manager = instance_find(oCharacterManager, 0);
-choice_controller = instance_find(oChoiceController, 0);
-
-
-// Tell VN Controller this is the current scene
-vn_controller.scene_manager = id;
+transition_active = false;
+transition_alpha = 0;
+transition_speed = 0.03;
 
 
 // ==========================================
-// CHOICE SELECTED
+// AMBER FADE
 // ==========================================
 
-function choice_selected(_choice)
-{
-    // ==========================================
-    // AMBER CHOICE
-    // ==========================================
-
-    if (dialogue_stage == "choice")
-    {
-        character_manager.set_active_character("Amber");
-
-
-        // Choice 1
-        if (_choice == 0)
-        {
-            dialogue_stage = "choice_response";
-
-            character_manager.change_expression(
-                character_manager.amber,
-                "arms_crossed"
-            );
-
-            vn_controller.start_dialogue(
-                "Amber",
-                "You're welcome moron"
-            );
-        }
-
-
-        // Choice 2
-        else if (_choice == 1)
-        {
-            dialogue_stage = "choice_response";
-
-            character_manager.change_expression(
-                character_manager.amber,
-                "arms_crossed"
-            );
-
-            vn_controller.start_dialogue(
-                "Amber",
-                "Excuse me? Do you think you're cool or something?"
-            );
-        }
-
-
-        // Choice 3
-        else if (_choice == 2)
-        {
-            dialogue_stage = "choice_response";
-
-            character_manager.change_expression(
-                character_manager.amber,
-                "arms_crossed"
-            );
-
-            vn_controller.start_dialogue(
-                "Amber",
-                "Don't give me attitude"
-            );
-        }
-
-
-        // Choice 4
-        else if (_choice == 3)
-        {
-            dialogue_stage = "common_dialogue";
-
-            character_manager.change_expression(
-                character_manager.amber,
-                "default"
-            );
-
-            vn_controller.start_dialogue(
-                "Amber",
-                "Whatever, I don't have time for your bullshit.\nI gotta go, my friends are waiting for me."
-            );
-        }
-    }
-
-
-    // ==========================================
-    // FELIX CHOICE
-    // ==========================================
-
-    else if (dialogue_stage == "felix_choice")
-    {
-        character_manager.set_active_character("Felix");
-
-
-        // Choice 1
-        if (_choice == 0)
-        {
-            dialogue_stage = "felix_choice_1";
-
-            vn_controller.start_dialogue(
-                "Felix",
-                "There's no way you missed it, I texted you."
-            );
-        }
-
-
-        // Choice 2
-        else if (_choice == 1)
-        {
-            dialogue_stage = "felix_choice_2";
-
-            vn_controller.start_dialogue(
-                "Felix",
-                "It was so fucking cool dude."
-            );
-        }
-
-
-        // Choice 3
-        else if (_choice == 2)
-        {
-            dialogue_stage = "felix_choice_3";
-
-            vn_controller.start_dialogue(
-                "Felix",
-                "Don't play dumb with me {MC}"
-            );
-        }
-
-
-        // Choice 4
-        else if (_choice == 3)
-        {
-            dialogue_stage = "felix_choice_4";
-
-            vn_controller.start_dialogue(
-                "Felix",
-                "I'm pre-ordering it as soon as I can."
-            );
-        }
-    }
-}
+amber_leaving = false;
+amber_fade_timer = 0;
 
 
 // ==========================================
@@ -211,30 +112,170 @@ function start_felix_choice()
 
 
 // ==========================================
-// DIALOGUE FINISHED
+// CHOICE CALLBACK
+// ==========================================
+
+function choice_selected(_choice)
+{
+    // ======================================
+    // AMBER CHOICE
+    // ======================================
+
+    if (dialogue_stage == "amber_choice")
+    {
+        character_manager.set_active_character("Amber");
+
+        dialogue_stage = "amber_response";
+
+        character_manager.change_expression(
+            character_manager.amber,
+            "arms_crossed"
+        );
+
+        switch (_choice)
+        {
+            case 0:
+
+                vn_controller.start_dialogue(
+                    "Amber",
+                    "You're welcome moron"
+                );
+
+            break;
+
+
+            case 1:
+
+                vn_controller.start_dialogue(
+                    "Amber",
+                    "Excuse me? Do you think you're cool or something?"
+                );
+
+            break;
+
+
+            case 2:
+
+                vn_controller.start_dialogue(
+                    "Amber",
+                    "Don't give me attitude"
+                );
+
+            break;
+
+
+            case 3:
+
+                dialogue_stage = "amber_common";
+
+                character_manager.change_expression(
+                    character_manager.amber,
+                    "default"
+                );
+
+                vn_controller.start_dialogue(
+                    "Amber",
+                    "Whatever, I don't have time for your bullshit.\n" +
+                    "I gotta go, my friends are waiting for me."
+                );
+
+            break;
+        }
+
+        return;
+    }
+
+
+    // ======================================
+    // FELIX CHOICE
+    // ======================================
+
+    if (dialogue_stage == "felix_choice")
+    {
+        character_manager.set_active_character("Felix");
+
+        switch (_choice)
+        {
+            case 0:
+
+                dialogue_stage = "felix_choice_response";
+
+                vn_controller.start_dialogue(
+                    "Felix",
+                    "There's no way you missed it, I texted you."
+                );
+
+            break;
+
+
+            case 1:
+
+                dialogue_stage = "felix_choice_response";
+
+                vn_controller.start_dialogue(
+                    "Felix",
+                    "It was so fucking cool dude."
+                );
+
+            break;
+
+
+            case 2:
+
+                dialogue_stage = "felix_choice_response";
+
+                vn_controller.start_dialogue(
+                    "Felix",
+                    "Don't play dumb with me {MC}"
+                );
+
+            break;
+
+
+            case 3:
+
+                dialogue_stage = "felix_choice_response";
+
+                vn_controller.start_dialogue(
+                    "Felix",
+                    "I'm pre-ordering it as soon as I can."
+                );
+
+            break;
+        }
+
+        return;
+    }
+}
+
+
+// ==========================================
+// DIALOGUE CALLBACK
 // ==========================================
 
 function dialogue_finished()
 {
-    // ==========================================
-    // INTRO → AMBER CHOICE
-    // ==========================================
+    // ======================================
+    // INTRO
+    // ======================================
 
     if (dialogue_stage == "intro")
     {
-        dialogue_stage = "choice";
+        dialogue_stage = "amber_choice";
 
         start_amber_choice();
+
+        return;
     }
 
 
-    // ==========================================
-    // AMBER CHOICE RESPONSE → COMMON DIALOGUE
-    // ==========================================
+    // ======================================
+    // AMBER RESPONSE
+    // ======================================
 
-    else if (dialogue_stage == "choice_response")
+    if (dialogue_stage == "amber_response")
     {
-        dialogue_stage = "common_dialogue";
+        dialogue_stage = "amber_common";
 
         character_manager.change_expression(
             character_manager.amber,
@@ -243,60 +284,73 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "Amber",
-            "Whatever, I don't have time for your bullshit.\nI gotta go, my friends are waiting for me."
+            "Whatever, I don't have time for your bullshit.\n" +
+            "I gotta go, my friends are waiting for me."
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // COMMON DIALOGUE → "..."
-    // ==========================================
+    // ======================================
+    // AMBER COMMON
+    // ======================================
 
-    else if (dialogue_stage == "common_dialogue")
+    if (dialogue_stage == "amber_common")
     {
-        dialogue_stage = "ellipsis";
+        dialogue_stage = "amber_ellipsis";
 
         vn_controller.start_dialogue(
             "Amber",
             "..."
         );
 
-        vn_controller.keep_dialogue_box = true;
+        return;
     }
 
 
-    // ==========================================
-    // "..." → FRIENDS DIALOGUE
-    // ==========================================
+    // ======================================
+    // AMBER ...
+    // ======================================
 
-    else if (dialogue_stage == "ellipsis")
+    if (dialogue_stage == "amber_ellipsis")
     {
-        dialogue_stage = "friends_dialogue";
+        dialogue_stage = "amber_friends";
 
         vn_controller.start_dialogue(
             "Amber",
-            "Oh friends? They're people who care for you and look out for you. Not that you would know anything about that."
+            "Oh friends? They're people who care for you and look out for you. " +
+            "Not that you would know anything about that."
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // FRIENDS DIALOGUE → AMBER LEAVES
-    // ==========================================
+    // ======================================
+    // AMBER FRIENDS → LEAVE
+    // ======================================
 
-    else if (dialogue_stage == "friends_dialogue")
+    if (dialogue_stage == "amber_friends")
     {
-        dialogue_stage = "amber_left";
+        dialogue_stage = "amber_leaving";
 
-        character_manager.hide_character("Amber");
+        character_manager.hide_character(
+            "Amber"
+        );
+
+        amber_leaving = true;
+        amber_fade_timer = room_speed;
+
+        return;
     }
 
 
-    // ==========================================
-    // MC AFTER AMBER → FELIX APPEARS
-    // ==========================================
+    // ======================================
+    // MC AFTER AMBER
+    // ======================================
 
-    else if (dialogue_stage == "mc_after_amber")
+    if (dialogue_stage == "mc_after_amber")
     {
         dialogue_stage = "felix_intro";
 
@@ -305,7 +359,9 @@ function dialogue_finished()
             "center"
         );
 
-        character_manager.set_active_character("Felix");
+        character_manager.set_active_character(
+            "Felix"
+        );
 
         character_manager.change_expression(
             character_manager.felix,
@@ -316,16 +372,18 @@ function dialogue_finished()
             "Felix",
             "Wassup homedawg?"
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // FELIX → MC
-    // ==========================================
+    // ======================================
+    // FELIX INTRO
+    // ======================================
 
-    else if (dialogue_stage == "felix_intro")
+    if (dialogue_stage == "felix_intro")
     {
-        dialogue_stage = "felix_mc_intro";
+        dialogue_stage = "felix_mc";
 
         character_manager.set_active_character("");
 
@@ -333,31 +391,38 @@ function dialogue_finished()
             "{MC}",
             "Hey dude wassup? You're early I see... for you that is."
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // MC → FELIX
-    // ==========================================
+    // ======================================
+    // FELIX → MOM
+    // ======================================
 
-    else if (dialogue_stage == "felix_mc_intro")
+    if (dialogue_stage == "felix_mc")
     {
         dialogue_stage = "felix_mom";
 
-        character_manager.set_active_character("Felix");
+        character_manager.set_active_character(
+            "Felix"
+        );
 
         vn_controller.start_dialogue(
             "Felix",
-            "Yeah mom said she doesn't care if I'm late on any other day.\nBut she won't let me be late on the first day."
+            "Yeah mom said she doesn't care if I'm late on any other day.\n" +
+            "But she won't let me be late on the first day."
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // FELIX → MC
-    // ==========================================
+    // ======================================
+    // MOM → MC
+    // ======================================
 
-    else if (dialogue_stage == "felix_mom")
+    if (dialogue_stage == "felix_mom")
     {
         dialogue_stage = "felix_mom_mc";
 
@@ -367,18 +432,22 @@ function dialogue_finished()
             "{MC}",
             "Damn, your mom's really nice"
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // MC → FELIX EXCITED
-    // ==========================================
+    // ======================================
+    // MC → FELIX GTA
+    // ======================================
 
-    else if (dialogue_stage == "felix_mom_mc")
+    if (dialogue_stage == "felix_mom_mc")
     {
-        dialogue_stage = "felix_excited";
+        dialogue_stage = "felix_gta";
 
-        character_manager.set_active_character("Felix");
+        character_manager.set_active_character(
+            "Felix"
+        );
 
         character_manager.change_expression(
             character_manager.felix,
@@ -387,79 +456,54 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "Felix",
-            "Yeah she's the best.\nEnough 'bout my mom dude, did you see the GTA 6 trailer that dropped yesterday?"
+            "Yeah she's the best.\n" +
+            "Enough 'bout my mom dude, did you see the GTA 6 trailer that dropped yesterday?"
         );
+
+        return;
     }
 
 
-    // ==========================================
+    // ======================================
     // FELIX → CHOICE
-    // ==========================================
+    // ======================================
 
-    else if (dialogue_stage == "felix_excited")
+    if (dialogue_stage == "felix_gta")
     {
         dialogue_stage = "felix_choice";
 
         start_felix_choice();
+
+        return;
     }
 
 
-    // ==========================================
-    // FELIX CHOICE 1 → PREORDER
-    // ==========================================
+    // ======================================
+    // FELIX CHOICE RESPONSE
+    // ======================================
 
-    else if (dialogue_stage == "felix_choice_1")
+    if (dialogue_stage == "felix_choice_response")
     {
         dialogue_stage = "felix_preorder";
 
-        character_manager.set_active_character("Felix");
+        character_manager.set_active_character(
+            "Felix"
+        );
 
         vn_controller.start_dialogue(
             "Felix",
             "I'm pre-ordering it as soon as I can."
         );
+
+        return;
     }
 
 
-    // ==========================================
-    // FELIX CHOICE 2 → PREORDER
-    // ==========================================
+    // ======================================
+    // FELIX PREORDER → FINAL MC
+    // ======================================
 
-    else if (dialogue_stage == "felix_choice_2")
-    {
-        dialogue_stage = "felix_preorder";
-
-        character_manager.set_active_character("Felix");
-
-        vn_controller.start_dialogue(
-            "Felix",
-            "I'm pre-ordering it as soon as I can."
-        );
-    }
-
-
-    // ==========================================
-    // FELIX CHOICE 3 → PREORDER
-    // ==========================================
-
-    else if (dialogue_stage == "felix_choice_3")
-    {
-        dialogue_stage = "felix_preorder";
-
-        character_manager.set_active_character("Felix");
-
-        vn_controller.start_dialogue(
-            "Felix",
-            "I'm pre-ordering it as soon as I can."
-        );
-    }
-
-
-    // ==========================================
-    // FELIX CHOICE 4 → FINAL MC DIALOGUE
-    // ==========================================
-
-    else if (dialogue_stage == "felix_choice_4")
+    if (dialogue_stage == "felix_preorder")
     {
         dialogue_stage = "scene_complete";
 
@@ -467,52 +511,28 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "{MC}",
-            "Yeah yeah, you can do that later. Let's go now... we're about to miss attendance."
+            "Yeah yeah, you can do that later. Let's go now... " +
+            "we're about to miss attendance."
         );
+
+        return;
     }
 
 
     // ==========================================
-    // PREORDER → FINAL MC DIALOGUE
-    // ==========================================
+	// SCENE COMPLETE
+	// ==========================================
 
-    else if (dialogue_stage == "felix_preorder")
-    {
-        dialogue_stage = "scene_complete";
+	if (dialogue_stage == "scene_complete")
+	{
+	    // Hide Felix as the screen fades out
+	    character_manager.hide_character(
+	        "Felix"
+	    );
 
-        character_manager.set_active_character("");
+	    transition_active = true;
+	    transition_alpha = 0;
 
-        vn_controller.start_dialogue(
-            "{MC}",
-            "Yeah yeah, you can do that later. Let's go now... we're about to miss attendance."
-        );
-    }
-
-
-    // ==========================================
-    // SCENE COMPLETE
-    // ==========================================
-
-    else if (dialogue_stage == "scene_complete")
-    {
-        // Scene 2 finished.
-        // Add scene transition here later.
-    }
-}
-
-
-// ==========================================
-// AMBER FADE FINISHED
-// ==========================================
-
-function amber_fade_finished()
-{
-    dialogue_stage = "mc_after_amber";
-
-    character_manager.set_active_character("");
-
-    vn_controller.start_dialogue(
-        "{MC}",
-        "Why's she gotta be so mean all the time."
-    );
+	    return;
+	}
 }

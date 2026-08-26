@@ -85,14 +85,6 @@ expressions =
             sprite: sJasda_New,
             scale: 1.03
         },
-
-		// 600x700
-        new_idle:
-        {
-            
-			sprite: sJasda_Idle,
-            scale: 1.5
-        }
     },
 
     Amber:
@@ -103,13 +95,6 @@ expressions =
             sprite: sAmber_New,
             scale: 1.03
         },
-
-		// 600x700
-        new_idle:
-        {
-			sprite: sAmber_Idle,
-            scale: 1.5
-        }
     },
 
     Felix:
@@ -121,30 +106,18 @@ expressions =
             scale: 1.03
             
         },
-        
-		// 600x700
-        new_idle:
-        {
-			sprite: sFelix_Idle,
-            scale: 1.5
-        }
+
     },
 
     Ariel:
     {
-        // 600x700
+		// 900x1058
         default:
         {
-            sprite: sAriel_Idle,
-            scale: 1.5
+			sprite: sAriel_New,
+            scale: 1.03
         },
 
-        // 900x1058
-        new_idle:
-        {
-            sprite: sAriel_New,
-            scale: 0.85
-        },
 
         // Old smoking sprite
         smoking:
@@ -193,17 +166,17 @@ jasda = create_character(
 
 amber = create_character(
     "Amber",
-    sAmber_Idle
+    sAmber_New
 );
 
 felix = create_character(
     "Felix",
-    sFelix_Idle
+    sFelix_New
 );
 
 ariel = create_character(
     "Ariel",
-    sAriel_Idle
+    sAriel_New
 );
 
 

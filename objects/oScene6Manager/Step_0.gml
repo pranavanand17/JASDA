@@ -81,5 +81,6 @@ if (transition_active)
         transition_alpha = 1;
 
         // Scene 7 goes here later.
+		room_goto(rm_scene7);
     }
 }

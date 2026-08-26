@@ -128,5 +128,7 @@ if (door_state == 3)
         // --------------------------------------
 
         door_state = 4;
+		
+		room_goto(rm_scene1_4);
     }
 }
