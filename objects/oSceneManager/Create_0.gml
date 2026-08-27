@@ -7,6 +7,20 @@ char_manager = instance_find(
     0
 );
 
+// ==========================================
+// VN CONTROLLER
+// ==========================================
+
+vn_controller = instance_find(
+    oVNController,
+    0
+);
+
+if (vn_controller != noone)
+{
+    vn_controller.scene_manager = id;
+}
+
 
 // ==========================================
 // CURRENT SCENE
@@ -246,3 +260,24 @@ end_fade_alpha = 0;
 
 dialogue_started = false;
 dialogue_has_been_active = false;
+
+
+// ==========================================
+// DIALOGUE CALLBACK
+// ==========================================
+
+function dialogue_finished()
+{
+    // ======================================
+    // SCENE 1 DIALOGUE FINISHED
+    // ======================================
+
+    if (
+        dialogue_started &&
+        !scene_ending
+    )
+    {
+        scene_ending = true;
+        end_fade_alpha = 0;
+    }
+}

@@ -12,13 +12,21 @@ run_scene_events();
 
 
 // ==========================================
-// FIND VN CONTROLLER
+// FIND / CONNECT VN CONTROLLER
 // ==========================================
 
-var vn_controller = instance_find(
-    oVNController,
-    0
-);
+if (vn_controller == noone)
+{
+    vn_controller = instance_find(
+        oVNController,
+        0
+    );
+
+    if (vn_controller != noone)
+    {
+        vn_controller.scene_manager = id;
+    }
+}
 
 
 // ==========================================
