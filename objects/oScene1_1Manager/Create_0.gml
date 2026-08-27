@@ -1,50 +1,16 @@
 // ==========================================
-// CHARACTER MANAGER
+// SCENE 1_1 MANAGER
 // ==========================================
-
-char_manager = instance_find(
-    oCharacterManager,
-    0
-);
 
 
 // ==========================================
-// VN CONTROLLER
+// FIND VN CONTROLLER
 // ==========================================
 
 vn_controller = instance_find(
     oVNController,
     0
 );
-
-if (vn_controller != noone)
-{
-    vn_controller.scene_manager = id;
-}
-
-
-// ==========================================
-// CURRENT SCENE
-// ==========================================
-
-current_scene = noone;
-
-
-// ==========================================
-// TABLE SCENE
-// ==========================================
-
-scene_table =
-{
-    background: sTable
-};
-
-
-// ==========================================
-// SCENE STATE
-// ==========================================
-
-loaded = false;
 
 
 // ==========================================
@@ -82,11 +48,8 @@ pencilbox_collected = false;
 // DIALOGUE
 // ==========================================
 
-table_objects_finished = false;
-table_dialogue_started = false;
-
-dialogue_delay_active = false;
-dialogue_delay_timer = 0;
+dialogue_started = false;
+dialogue_has_been_active = false;
 
 
 // ==========================================
@@ -97,16 +60,3 @@ scene_ending = false;
 
 end_fade_alpha = 0;
 end_fade_speed = 0.03;
-
-// ==========================================
-// DIALOGUE CALLBACK
-// ==========================================
-
-function dialogue_finished()
-{
-    if (!scene_ending)
-    {
-        scene_ending = true;
-        end_fade_alpha = 0;
-    }
-}

@@ -166,7 +166,7 @@ function choice_selected(_choice)
 
             case 3:
 
-                dialogue_stage = "amber_common";
+                dialogue_stage = "amber_common_1";
 
                 character_manager.change_expression(
                     character_manager.amber,
@@ -175,8 +175,7 @@ function choice_selected(_choice)
 
                 vn_controller.start_dialogue(
                     "Amber",
-                    "Whatever, I don't have time for your bullshit.\n" +
-                    "I gotta go, my friends are waiting for me."
+                    "Whatever, I don't have time for your bullshit."
                 );
 
             break;
@@ -275,7 +274,7 @@ function dialogue_finished()
 
     if (dialogue_stage == "amber_response")
     {
-        dialogue_stage = "amber_common";
+        dialogue_stage = "amber_common_1";
 
         character_manager.change_expression(
             character_manager.amber,
@@ -284,7 +283,23 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "Amber",
-            "Whatever, I don't have time for your bullshit.\n" +
+            "Whatever, I don't have time for your bullshit."
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // AMBER COMMON - LINE 1 → LINE 2
+    // ======================================
+
+    if (dialogue_stage == "amber_common_1")
+    {
+        dialogue_stage = "amber_common_2";
+
+        vn_controller.start_dialogue(
+            "Amber",
             "I gotta go, my friends are waiting for me."
         );
 
@@ -293,10 +308,10 @@ function dialogue_finished()
 
 
     // ======================================
-    // AMBER COMMON
+    // AMBER COMMON - LINE 2 → ...
     // ======================================
 
-    if (dialogue_stage == "amber_common")
+    if (dialogue_stage == "amber_common_2")
     {
         dialogue_stage = "amber_ellipsis";
 
@@ -397,12 +412,12 @@ function dialogue_finished()
 
 
     // ======================================
-    // FELIX → MOM
+    // FELIX → MOM - LINE 1
     // ======================================
 
     if (dialogue_stage == "felix_mc")
     {
-        dialogue_stage = "felix_mom";
+        dialogue_stage = "felix_mom_1";
 
         character_manager.set_active_character(
             "Felix"
@@ -410,7 +425,23 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "Felix",
-            "Yeah mom said she doesn't care if I'm late on any other day.\n" +
+            "Yeah mom said she doesn't care if I'm late on any other day."
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // FELIX → MOM - LINE 2
+    // ======================================
+
+    if (dialogue_stage == "felix_mom_1")
+    {
+        dialogue_stage = "felix_mom_2";
+
+        vn_controller.start_dialogue(
+            "Felix",
             "But she won't let me be late on the first day."
         );
 
@@ -422,7 +453,7 @@ function dialogue_finished()
     // MOM → MC
     // ======================================
 
-    if (dialogue_stage == "felix_mom")
+    if (dialogue_stage == "felix_mom_2")
     {
         dialogue_stage = "felix_mom_mc";
 
@@ -438,12 +469,12 @@ function dialogue_finished()
 
 
     // ======================================
-    // MC → FELIX GTA
+    // MC → FELIX GTA - LINE 1
     // ======================================
 
     if (dialogue_stage == "felix_mom_mc")
     {
-        dialogue_stage = "felix_gta";
+        dialogue_stage = "felix_gta_1";
 
         character_manager.set_active_character(
             "Felix"
@@ -456,7 +487,23 @@ function dialogue_finished()
 
         vn_controller.start_dialogue(
             "Felix",
-            "Yeah she's the best.\n" +
+            "Yeah she's the best."
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // FELIX GTA - LINE 2
+    // ======================================
+
+    if (dialogue_stage == "felix_gta_1")
+    {
+        dialogue_stage = "felix_gta_2";
+
+        vn_controller.start_dialogue(
+            "Felix",
             "Enough 'bout my mom dude, did you see the GTA 6 trailer that dropped yesterday?"
         );
 
@@ -465,10 +512,10 @@ function dialogue_finished()
 
 
     // ======================================
-    // FELIX → CHOICE
+    // FELIX GTA → CHOICE
     // ======================================
 
-    if (dialogue_stage == "felix_gta")
+    if (dialogue_stage == "felix_gta_2")
     {
         dialogue_stage = "felix_choice";
 
@@ -520,19 +567,18 @@ function dialogue_finished()
 
 
     // ==========================================
-	// SCENE COMPLETE
-	// ==========================================
+    // SCENE COMPLETE
+    // ==========================================
 
-	if (dialogue_stage == "scene_complete")
-	{
-	    // Hide Felix as the screen fades out
-	    character_manager.hide_character(
-	        "Felix"
-	    );
+    if (dialogue_stage == "scene_complete")
+    {
+        character_manager.hide_character(
+            "Felix"
+        );
 
-	    transition_active = true;
-	    transition_alpha = 0;
+        transition_active = true;
+        transition_alpha = 0;
 
-	    return;
-	}
+        return;
+    }
 }

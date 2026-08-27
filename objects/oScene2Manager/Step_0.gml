@@ -101,7 +101,6 @@ if (transition_active)
         // SCENE 2 ENDS
         // ==================================
 
-        // Put next room here when ready.
         room_goto(rm_scene3);
     }
 }

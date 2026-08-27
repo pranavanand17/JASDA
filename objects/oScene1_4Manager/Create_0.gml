@@ -50,11 +50,12 @@ fade_speed = 0.03;
 // 0 = fading in
 // 1 = Amber's first dialogue
 // 2 = choices
-// 3 = Amber's response
-// 4 = Amber's "..."
-// 5 = Amber's final line
-// 6 = fading to black
-// 7 = finished
+// 3 = Amber's first response
+// 4 = Amber's second response
+// 5 = Amber's "..."
+// 6 = Amber's final line
+// 7 = fading to black
+// 8 = finished
 
 scene_state = 0;
 
@@ -124,12 +125,29 @@ function dialogue_finished()
 
 
     // ==========================================
-    // AMBER RESPONSE FINISHED
+    // FIRST AMBER RESPONSE FINISHED
     // ==========================================
 
     if (scene_state == 3)
     {
         scene_state = 4;
+
+        vn_controller.start_dialogue(
+            "Amber",
+            "If it weren't for my mom I wouldn't even have to walk with you to school anyway."
+        );
+
+        return;
+    }
+
+
+    // ==========================================
+    // SECOND AMBER RESPONSE FINISHED
+    // ==========================================
+
+    if (scene_state == 4)
+    {
+        scene_state = 5;
 
         vn_controller.start_dialogue(
             "Amber",
@@ -144,9 +162,9 @@ function dialogue_finished()
     // "..." FINISHED
     // ==========================================
 
-    if (scene_state == 4)
+    if (scene_state == 5)
     {
-        scene_state = 5;
+        scene_state = 6;
 
         vn_controller.start_dialogue(
             "Amber",
@@ -161,9 +179,9 @@ function dialogue_finished()
     // FINAL DIALOGUE FINISHED
     // ==========================================
 
-    if (scene_state == 5)
+    if (scene_state == 6)
     {
-        scene_state = 6;
+        scene_state = 7;
 
         scene_ending = true;
 
@@ -192,8 +210,7 @@ function choice_selected(_choice)
 
         vn_controller.start_dialogue(
             "Amber",
-            "Ok shut up, I don't wanna hear any of your lame excuses again.\n" +
-            "If it weren't for my mom I wouldn't even have to walk with you to school anyway."
+            "Ok shut up, I don't wanna hear any of your lame excuses again."
         );
     }
 }
