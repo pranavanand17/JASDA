@@ -72,10 +72,6 @@ function dialogue_finished()
 
             dialogue_stage = "jasda_apology";
 
-            // --------------------------------
-            // JASDA APPEARS
-            // --------------------------------
-
             character_manager.show_character(
                 character_manager.jasda,
                 "center"
@@ -122,7 +118,7 @@ function dialogue_finished()
 
         case "mc_wassup":
 
-            dialogue_stage = "jasda_extracurriculars";
+            dialogue_stage = "jasda_extracurriculars_2";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -130,7 +126,7 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "You said you would show me around school...\nI was wondering where I would go for extracurriculars."
+                "You said you would show me around school..."
             );
 
         break;
@@ -140,15 +136,13 @@ function dialogue_finished()
         // JASDA - EXTRACURRICULARS
         // ==================================
 
-        case "jasda_extracurriculars":
+        case "jasda_extracurriculars_2":
 
             dialogue_stage = "mc_forgot";
 
-            character_manager.set_active_character("");
-
             vn_controller.start_dialogue(
-                "{MC}",
-                "Oh I'm so sorry I completely forgot."
+                "Jasda",
+                "I was wondering where I would go for extracurriculars."
             );
 
         break;
@@ -161,6 +155,24 @@ function dialogue_finished()
         case "mc_forgot":
 
             dialogue_stage = "jasda_someone_else";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Oh I'm so sorry I completely forgot."
+            );
+
+        break;
+
+
+        // ==================================
+        // JASDA - ASK SOMEONE ELSE
+        // ==================================
+
+        case "jasda_someone_else":
+
+            dialogue_stage = "mc_show_around";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -175,12 +187,12 @@ function dialogue_finished()
 
 
         // ==================================
-        // JASDA - ASK SOMEONE ELSE
+        // MC - SHOW YOU AROUND
         // ==================================
 
-        case "jasda_someone_else":
+        case "mc_show_around":
 
-            dialogue_stage = "mc_show_around";
+            dialogue_stage = "jasda_great";
 
             character_manager.set_active_character("");
 
@@ -193,12 +205,12 @@ function dialogue_finished()
 
 
         // ==================================
-        // MC - SHOW YOU AROUND
+        // JASDA - THAT'S GREAT
         // ==================================
 
-        case "mc_show_around":
+        case "jasda_great":
 
-            dialogue_stage = "jasda_great";
+            dialogue_stage = "mc_clubroom";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -213,28 +225,12 @@ function dialogue_finished()
 
 
         // ==================================
-        // JASDA - THAT'S GREAT
-        // ==================================
-
-        case "jasda_great":
-
-            dialogue_stage = "mc_clubroom";
-
-            character_manager.set_active_character("");
-
-            vn_controller.start_dialogue(
-                "{MC}",
-                "Come this way to the club room..."
-            );
-
-        break;
-
-
-        // ==================================
         // MC - CLUB ROOM
         // ==================================
 
         case "mc_clubroom":
+
+            character_manager.set_active_character("");
 
             character_manager.hide_character(
                 "Jasda"

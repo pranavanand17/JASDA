@@ -80,9 +80,9 @@ function dialogue_finished()
 {
     switch (dialogue_stage)
     {
-        // ==================================
+        // ==========================================
         // MC - CLUBROOM
-        // ==================================
+        // ==========================================
 
         case "intro":
 
@@ -94,19 +94,35 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "Wow, it's way bigger than my previous school's club room.\nWhat do you guys do here?"
+                "Wow, it's way bigger than my previous school's club room."
             );
 
         break;
 
 
-        // ==================================
-        // JASDA - CLUBROOM
-        // ==================================
+        // ==========================================
+        // WHAT DO YOU GUYS DO HERE
+        // ==========================================
 
         case "jasda_big":
 
             dialogue_stage = "mc_nothing";
+
+            vn_controller.start_dialogue(
+                "Jasda",
+                "What do you guys do here?"
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC - NOTHING
+        // ==========================================
+
+        case "mc_nothing":
+
+            dialogue_stage = "jasda_nothing";
 
             character_manager.set_active_character("");
 
@@ -118,13 +134,13 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // MC - NOTHING
-        // ==================================
+        // ==========================================
+        // JASDA - NOTHING?
+        // ==========================================
 
-        case "mc_nothing":
+        case "jasda_nothing":
 
-            dialogue_stage = "jasda_nothing";
+            dialogue_stage = "mc_explanation1";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -138,31 +154,43 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // JASDA - NOTHING?
-        // ==================================
+        // ==========================================
+        // MC - EXPLANATION
+        // ==========================================
 
-        case "jasda_nothing":
+        case "mc_explanation1":
 
-            dialogue_stage = "mc_explanation";
+            dialogue_stage = "mc_explanation2";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "We're forced to stay behind and me and my friend Felix have nothing to do.\nSo we just sit around and talk about random stuff."
+                "We're forced to stay behind and me and my friend Felix have nothing to do."
             );
 
         break;
 
 
-        // ==================================
-        // MC - EXPLANATION
-        // ==================================
-
-        case "mc_explanation":
+        case "mc_explanation2":
 
             dialogue_stage = "jasda_cool";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "So we just sit around and talk about random stuff."
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - COOL
+        // ==========================================
+
+        case "jasda_cool":
+
+            dialogue_stage = "mc_depressing";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -176,11 +204,11 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // JASDA - COOL
-        // ==================================
+        // ==========================================
+        // MC - DEPRESSING
+        // ==========================================
 
-        case "jasda_cool":
+        case "mc_depressing":
 
             dialogue_stage = "mc_club_activity";
 
@@ -188,19 +216,31 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "You don't have to be nice, it's honestly pretty depressing.\nIf you like you could join some club activity."
+                "You don't have to be nice, it's honestly pretty depressing."
             );
 
         break;
 
 
-        // ==================================
-        // MC - CLUB ACTIVITY
-        // ==================================
-
         case "mc_club_activity":
 
             dialogue_stage = "jasda_club";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "If you like you could join some club activity."
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - CLUB
+        // ==========================================
+
+        case "jasda_club":
+
+            dialogue_stage = "jasda_what_club";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -208,37 +248,61 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "Ooh! That's cool.\nWhat club can I join?"
+                "Ooh! That's cool."
             );
 
         break;
 
 
-        // ==================================
-        // JASDA - WHAT CLUB
-        // ==================================
+        case "jasda_what_club":
 
-        case "jasda_club":
+            dialogue_stage = "mc_club_list";
 
-            dialogue_stage = "mc_amber_club";
+            vn_controller.start_dialogue(
+                "Jasda",
+                "What club can I join?"
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC - CLUB LIST
+        // ==========================================
+
+        case "mc_club_list":
+
+            dialogue_stage = "mc_amber";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "There's a lot I'm not really sure.\nAmber's in the occult club I think, you could check that out."
+                "There's a lot I'm not really sure."
             );
 
         break;
 
 
-        // ==================================
-        // MC - AMBER CLUB
-        // ==================================
-
-        case "mc_amber_club":
+        case "mc_amber":
 
             dialogue_stage = "jasda_who_amber";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Amber's in the occult club I think, you could check that out."
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - WHO'S AMBER
+        // ==========================================
+
+        case "jasda_who_amber":
+
+            dialogue_stage = "mc_amber_explanation1";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -252,31 +316,55 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // JASDA - WHO'S AMBER
-        // ==================================
+        // ==========================================
+        // MC - AMBER EXPLANATION
+        // ==========================================
 
-        case "jasda_who_amber":
+        case "mc_amber_explanation1":
 
-            dialogue_stage = "mc_amber_explanation";
+            dialogue_stage = "mc_amber_explanation2";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "It's this girl I walk to school with.\nShe's honestly the main reason I stay back anyway.\nI have to walk home with her as well."
+                "It's this girl I walk to school with."
             );
 
         break;
 
 
-        // ==================================
-        // MC - AMBER EXPLANATION
-        // ==================================
+        case "mc_amber_explanation2":
 
-        case "mc_amber_explanation":
+            dialogue_stage = "mc_amber_explanation3";
 
-            dialogue_stage = "jasda_girlfriend";
+            vn_controller.start_dialogue(
+                "{MC}",
+                "She's honestly the main reason I stay back anyway."
+            );
+
+        break;
+
+
+        case "mc_amber_explanation3":
+
+            dialogue_stage = "jasda_oh";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I have to walk home with her as well."
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - OH
+        // ==========================================
+
+        case "jasda_oh":
+
+            dialogue_stage = "jasda_pause";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -284,37 +372,97 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "Oh...\n...\nIs she your girlfriend?"
+                "Oh..."
             );
 
         break;
 
 
-        // ==================================
-        // JASDA - GIRLFRIEND
-        // ==================================
+        case "jasda_pause":
+
+            dialogue_stage = "jasda_girlfriend";
+
+            vn_controller.start_dialogue(
+                "Jasda",
+                "..."
+            );
+
+        break;
+
 
         case "jasda_girlfriend":
 
             dialogue_stage = "mc_not_girlfriend";
 
-            character_manager.set_active_character("");
-
             vn_controller.start_dialogue(
-                "{MC}",
-                "No no she's not.\nI just walk home with her because she's prolly scared to go home by herself.\nI think she thinks she has a stalker or something.\nShe's kinda weird like that."
+                "Jasda",
+                "Is she your girlfriend?"
             );
 
         break;
 
 
-        // ==================================
-        // MC - STALKER
-        // ==================================
+        // ==========================================
+        // MC - NOT GIRLFRIEND
+        // ==========================================
 
         case "mc_not_girlfriend":
 
+            dialogue_stage = "mc_walk_home";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "No no she's not."
+            );
+
+        break;
+
+
+        case "mc_walk_home":
+
+            dialogue_stage = "mc_stalker";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I just walk home with her because she's prolly scared to go home by herself."
+            );
+
+        break;
+
+
+        case "mc_stalker":
+
+            dialogue_stage = "mc_weird";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I think she thinks she has a stalker or something."
+            );
+
+        break;
+
+
+        case "mc_weird":
+
             dialogue_stage = "anonymous_weird";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "She's kinda weird like that."
+            );
+
+        break;
+
+
+        // ==========================================
+        // ANONYMOUS - WHO'S WEIRD
+        // ==========================================
+
+        case "anonymous_weird":
+
+            dialogue_stage = "amber_stalker";
 
             character_manager.set_active_character("");
 
@@ -326,13 +474,13 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // ANONYMOUS - WHO'S WEIRD
-        // ==================================
+        // ==========================================
+        // AMBER APPEARS
+        // ==========================================
 
-        case "anonymous_weird":
+        case "amber_stalker":
 
-            dialogue_stage = "amber_stalker";
+            dialogue_stage = "amber_not_weird";
 
             character_manager.show_character(
                 character_manager.amber,
@@ -350,19 +498,55 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Amber",
-                "I'm not weird.\nAlso I don't think I have a stalker.\nI know I have one.\nI've seen him."
+                "I'm not weird."
             );
 
         break;
 
 
-        // ==================================
-        // AMBER - STALKER
-        // ==================================
+        case "amber_not_weird":
 
-        case "amber_stalker":
+            dialogue_stage = "amber_dont_think";
 
-            dialogue_stage = "jasda_scared";
+            vn_controller.start_dialogue(
+                "Amber",
+                "Also I don't think I have a stalker."
+            );
+
+        break;
+
+
+        case "amber_dont_think":
+
+            dialogue_stage = "amber_know";
+
+            vn_controller.start_dialogue(
+                "Amber",
+                "I know I have one."
+            );
+
+        break;
+
+
+        case "amber_know":
+
+            dialogue_stage = "amber_seen";
+
+            vn_controller.start_dialogue(
+                "Amber",
+                "I've seen him."
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - STALKER
+        // ==========================================
+
+        case "amber_seen":
+
+            dialogue_stage = "jasda_scary";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -370,19 +554,31 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "Oh no, a stalker?\nThat's scary."
+                "Oh no, a stalker?"
             );
 
         break;
 
 
-        // ==================================
-        // JASDA - STALKER
-        // ==================================
-
-        case "jasda_scared":
+        case "jasda_scary":
 
             dialogue_stage = "anonymous_stalker";
+
+            vn_controller.start_dialogue(
+                "Jasda",
+                "That's scary."
+            );
+
+        break;
+
+
+        // ==========================================
+        // ANONYMOUS - STALKER
+        // ==========================================
+
+        case "anonymous_stalker":
+
+            dialogue_stage = "felix_stalker";
 
             character_manager.set_active_character("");
 
@@ -394,13 +590,13 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // ANONYMOUS - A STALKER?
-        // ==================================
+        // ==========================================
+        // FELIX APPEARS
+        // ==========================================
 
-        case "anonymous_stalker":
+        case "felix_stalker":
 
-            dialogue_stage = "felix_stalker";
+            dialogue_stage = "amber_stalker_question";
 
             character_manager.show_character(
                 character_manager.felix,
@@ -424,13 +620,13 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // FELIX - STALKER
-        // ==================================
+        // ==========================================
+        // AMBER - ANNOYING
+        // ==========================================
 
-        case "felix_stalker":
+        case "amber_stalker_question":
 
-            dialogue_stage = "amber_annoying";
+            dialogue_stage = "felix_help";
 
             character_manager.set_active_character(
                 "Amber"
@@ -444,13 +640,13 @@ function dialogue_finished()
         break;
 
 
-        // ==================================
-        // AMBER - ANNOYING
-        // ==================================
+        // ==========================================
+        // FELIX - OFFER
+        // ==========================================
 
-        case "amber_annoying":
+        case "felix_help":
 
-            dialogue_stage = "felix_help";
+            dialogue_stage = "felix_karate";
 
             character_manager.set_active_character(
                 "Felix"
@@ -458,19 +654,31 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Felix",
-                "I could scare him off for you today on your way back from school.\nI don't mean to brag but I have a black belt in Karate-"
+                "I could scare him off for you today on your way back from school."
             );
 
         break;
 
 
-        // ==================================
-        // FELIX - KARATE
-        // ==================================
-
-        case "felix_help":
+        case "felix_karate":
 
             dialogue_stage = "amber_no";
+
+            vn_controller.start_dialogue(
+                "Felix",
+                "I don't mean to brag but I have a black belt in Karate-"
+            );
+
+        break;
+
+
+        // ==========================================
+        // AMBER - NO
+        // ==========================================
+
+        case "amber_no":
+
+            dialogue_stage = "amber_walk";
 
             character_manager.set_active_character(
                 "Amber"
@@ -478,44 +686,99 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Amber",
-                "No dude, I'm good.\nI'm fine walking home with {MC}.\nI thought I told you already."
+                "No dude, I'm good."
             );
 
         break;
 
 
-        // ==================================
-        // AMBER - I'M GOOD
-        // ==================================
+        case "amber_walk":
 
-        case "amber_no":
+            dialogue_stage = "amber_told";
+
+            vn_controller.start_dialogue(
+                "Amber",
+                "I'm fine walking home with {MC}."
+            );
+
+        break;
+
+
+        case "amber_told":
 
             dialogue_stage = "felix_embarrassed";
+
+            vn_controller.start_dialogue(
+                "Amber",
+                "I thought I told you already."
+            );
+
+        break;
+
+
+        // ==========================================
+        // FELIX - EMBARRASSED
+        // ==========================================
+
+        case "felix_embarrassed":
+
+            dialogue_stage = "felix_pause";
 
             character_manager.set_active_character(
                 "Felix"
             );
 
-            character_manager.change_expression(
-                character_manager.felix,
-                "embarrassed"
-            );
-
             vn_controller.start_dialogue(
                 "Felix",
-                "Oh yeah right.\n...\nAnyway... I'll be heading home now.\nSee you later {MC}"
+                "Oh yeah right."
             );
 
         break;
 
 
-        // ==================================
-        // FELIX - LEAVING
-        // ==================================
+        case "felix_pause":
 
-        case "felix_embarrassed":
+            dialogue_stage = "felix_leaving";
 
-            dialogue_stage = "mc_goodbye";
+            vn_controller.start_dialogue(
+                "Felix",
+                "..."
+            );
+
+        break;
+
+
+        case "felix_leaving":
+
+            dialogue_stage = "felix_goodbye";
+
+            vn_controller.start_dialogue(
+                "Felix",
+                "Anyway... I'll be heading home now."
+            );
+
+        break;
+
+
+        case "felix_goodbye":
+
+            dialogue_stage = "mc_head_home";
+
+            vn_controller.start_dialogue(
+                "Felix",
+                "See you later {MC}"
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC - HEADING HOME
+        // ==========================================
+
+        case "mc_head_home":
+
+            dialogue_stage = "mc_jasda_goodbye";
 
             character_manager.hide_character(
                 "Felix"
@@ -525,19 +788,31 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "I guess we'll head home as well.\nSee you later Jasda"
+                "I guess we'll head home as well."
             );
 
         break;
 
 
-        // ==================================
-        // MC - SEE YOU LATER JASDA
-        // ==================================
-
-        case "mc_goodbye":
+        case "mc_jasda_goodbye":
 
             dialogue_stage = "jasda_goodbye";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "See you later Jasda"
+            );
+
+        break;
+
+
+        // ==========================================
+        // JASDA - GOODBYE
+        // ==========================================
+
+        case "jasda_goodbye":
+
+            dialogue_stage = "jasda_take_care";
 
             character_manager.set_active_character(
                 "Jasda"
@@ -545,17 +820,29 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Jasda",
-                "See ya.\nBoth of you take care."
+                "See ya."
             );
 
         break;
 
 
-        // ==================================
-        // JASDA - TAKE CARE
-        // ==================================
+        case "jasda_take_care":
 
-        case "jasda_goodbye":
+            dialogue_stage = "end";
+
+            vn_controller.start_dialogue(
+                "Jasda",
+                "Both of you take care."
+            );
+
+        break;
+
+
+        // ==========================================
+        // SCENE COMPLETE
+        // ==========================================
+
+        case "end":
 
             character_manager.hide_character(
                 "Jasda"

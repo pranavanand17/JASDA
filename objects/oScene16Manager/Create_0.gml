@@ -2,6 +2,7 @@
 // SCENE 16
 // ==========================================
 
+
 // ==========================================
 // FIND MANAGERS
 // ==========================================
@@ -21,6 +22,11 @@ choice_controller = instance_find(
     0
 );
 
+
+// ==========================================
+// CONNECT VN CONTROLLER
+// ==========================================
+
 if (vn_controller != noone)
 {
     vn_controller.scene_manager = id;
@@ -31,7 +37,6 @@ if (vn_controller != noone)
 // BACKGROUND
 // ==========================================
 
-// CHANGE THIS TO YOUR ACTUAL CLASSROOM SPRITE
 current_background = sClubroom;
 
 

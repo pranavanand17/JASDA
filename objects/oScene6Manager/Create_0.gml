@@ -280,7 +280,25 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "Sure... I guess I'll ask Amber if she's okay with it.\nI'm always making her late anyway."
+                "Sure... I guess I'll ask Amber if she's okay with it."
+            );
+
+        break;
+
+
+        // ======================================
+        // AMBER 2 - SECOND LINE
+        // ======================================
+
+        case "amber2":
+
+            dialogue_stage = "amber3";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I'm always making her late anyway."
             );
 
         break;
@@ -290,7 +308,7 @@ function dialogue_finished()
         // HE HE
         // ======================================
 
-        case "amber2":
+        case "amber3":
 
             dialogue_stage = "hehe";
 

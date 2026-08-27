@@ -342,18 +342,25 @@ function dialogue_finished()
         break;
 
 
-        case "name":
+case "name":
 
-            dialogue_stage = "mc_name";
+    dialogue_stage = "mc_name";
 
-            character_manager.set_active_character("");
+    character_manager.set_active_character("");
 
-            vn_controller.start_dialogue(
-                "{MC}",
-                global.player_name
-            );
+    var player_name_text = "MC";
 
-        break;
+    if (variable_global_exists("player_name"))
+    {
+        player_name_text = global.player_name;
+    }
+
+    vn_controller.start_dialogue(
+        "{MC}",
+        player_name_text
+    );
+
+break;
 
 
         case "mc_name":

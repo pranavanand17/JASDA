@@ -1,5 +1,5 @@
 // ==========================================
-// SCENE 5
+// SCENE 9
 // ==========================================
 
 
@@ -22,7 +22,15 @@ choice_controller = instance_find(
     0
 );
 
-vn_controller.scene_manager = id;
+
+// ==========================================
+// CONNECT SCENE MANAGER
+// ==========================================
+
+if (vn_controller != noone)
+{
+    vn_controller.scene_manager = id;
+}
 
 
 // ==========================================
@@ -44,7 +52,7 @@ transition_alpha = 0;
 
 
 // ==========================================
-// STATE
+// SCENE STATE
 // ==========================================
 
 scene_started = false;
@@ -54,37 +62,29 @@ dialogue_stage = "intro";
 
 
 // ==========================================
-// FIRST CHOICE
+// CHOICE STATE
 // ==========================================
 
-function start_first_choice()
+choice_started = false;
+
+
+// ==========================================
+// START CHOICE
+// ==========================================
+
+function start_choice()
 {
+    if (choice_controller == noone)
+    {
+        return;
+    }
+
     choice_controller.start_choice(
-    [
-        "I've seen you.",
-        "That makes sense.",
-        "Smoking is bad for you.",
-        "..."
-    ],
-    choice_selected
-    );
-}
-
-
-// ==========================================
-// SECOND CHOICE
-// ==========================================
-
-function start_second_choice()
-{
-    choice_controller.start_choice(
-    [
-        "People hang out with me.",
-        "Thanks for the tip.",
-        "I'm leaving.",
-        "..."
-    ],
-    choice_selected
+        [
+            "Go for it",
+            "Trust your gut"
+        ],
+        choice_selected
     );
 }
 
@@ -95,129 +95,44 @@ function start_second_choice()
 
 function choice_selected(_choice)
 {
-    // ======================================
-    // FIRST CHOICE
-    // ======================================
+    // ==========================================
+    // GO FOR IT
+    // ==========================================
 
-    if (dialogue_stage == "choice1")
+    if (_choice == 0)
     {
+        dialogue_stage = "choice_go_for_it";
+
         character_manager.set_active_character(
             "Ariel"
         );
 
-        switch(_choice)
-        {
-            case 0:
-
-                dialogue_stage = "after_choice1";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "But you wouldn't tell anyone would you?"
-                );
-
-            break;
-
-
-            case 1:
-
-                dialogue_stage = "after_choice1";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "I knew you would understand."
-                );
-
-            break;
-
-
-            case 2:
-
-                dialogue_stage = "after_choice1";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "Let's agree to disagree."
-                );
-
-            break;
-
-
-            case 3:
-
-                dialogue_stage = "after_choice1";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "..."
-                );
-
-            break;
-        }
+        vn_controller.start_dialogue(
+            "Ariel",
+            "Sure kid."
+        );
     }
 
 
-    // ======================================
-    // SECOND CHOICE
-    // ======================================
+    // ==========================================
+    // TRUST YOUR GUT
+    // ==========================================
 
-    else if (dialogue_stage == "choice2")
+    else if (_choice == 1)
     {
+        dialogue_stage = "choice_trust_gut";
+
         character_manager.set_active_character(
             "Ariel"
         );
 
-        switch(_choice)
-        {
-            case 0:
-
-                dialogue_stage = "scene_complete";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "Yeah for sure kid, I believe you."
-                );
-
-            break;
-
-
-            case 1:
-
-                dialogue_stage = "scene_complete";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "Don't mention it."
-                );
-
-            break;
-
-
-            case 2:
-
-                dialogue_stage = "scene_complete";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "Damn, you're fragile aren't you?"
-                );
-
-            break;
-
-
-            case 3:
-
-                dialogue_stage = "scene_complete";
-
-                vn_controller.start_dialogue(
-                    "Ariel",
-                    "Ok, quit loitering around. Go back to class now, break's 'bout to get over."
-                );
-
-            break;
-        }
+        vn_controller.start_dialogue(
+            "Ariel",
+            "Sure kid."
+        );
     }
 }
+
 
 // ==========================================
 // DIALOGUE CALLBACK
@@ -227,15 +142,14 @@ function dialogue_finished()
 {
     switch (dialogue_stage)
     {
-        // ==================================
+        // ==========================================
         // INTRO
-        // ==================================
+        // ==========================================
 
         case "intro":
 
-            dialogue_stage = "smoking";
+            dialogue_stage = "ariel_how";
 
-            // Ariel fades in after the anonymous voice
             character_manager.show_character(
                 character_manager.ariel,
                 "center"
@@ -252,37 +166,37 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "I don't think you should be here during lunch time."
+                "How'd it go?"
             );
 
         break;
 
 
-        // ==================================
-        // MC
-        // ==================================
+        // ==========================================
+        // HOW'D IT GO
+        // ==========================================
 
-        case "smoking":
+        case "ariel_how":
 
-            dialogue_stage = "fair_point";
+            dialogue_stage = "mc_how";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "I don't think you should be smoking in school either."
+                "How'd what go?"
             );
 
         break;
 
 
-        // ==================================
-        // FAIR POINT
-        // ==================================
+        // ==========================================
+        // YOU KNOW WHAT
+        // ==========================================
 
-        case "fair_point":
+        case "mc_how":
 
-            dialogue_stage = "matter";
+            dialogue_stage = "mc_that";
 
             character_manager.set_active_character(
                 "Ariel"
@@ -290,75 +204,69 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "You make a fair point."
+                "You know what."
             );
 
         break;
 
 
-        case "matter":
+        // ==========================================
+        // OH... THAT
+        // ==========================================
 
-            dialogue_stage = "choice_prompt";
+        case "mc_that":
 
-            vn_controller.start_dialogue(
-                "Ariel",
-                "But it shouldn't really matter as long as no one sees me."
-            );
-
-        break;
-
-
-        // ==================================
-        // FIRST CHOICE
-        // ==================================
-
-        case "choice_prompt":
-
-            dialogue_stage = "choice1";
-
-            start_first_choice();
-
-        break;
-
-
-        // ==================================
-        // AFTER FIRST CHOICE
-        // ==================================
-
-        case "after_choice1":
-
-            dialogue_stage = "name";
-
-            character_manager.change_expression(
-                character_manager.ariel,
-                "default"
-            );
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "What's your name kid?"
-            );
-
-        break;
-
-
-        case "name":
-
-            dialogue_stage = "mc_name";
+            dialogue_stage = "mc_why";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                global.player_name
+                "Oh...that."
             );
 
         break;
 
 
-        case "mc_name":
+        // ==========================================
+        // WHY DID YOU MAKE HER SIT NEXT TO ME
+        // ==========================================
 
-            dialogue_stage = "roof";
+        case "mc_why":
+
+            dialogue_stage = "mc_ship";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Yeah how come you made her sit next to me."
+            );
+
+        break;
+
+
+        // ==========================================
+        // YOU TRYNA SHIP YOUR STUDENTS
+        // ==========================================
+
+        case "mc_ship":
+
+            dialogue_stage = "ariel_woah";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "You tryna ship your students? That's weird if you ask me."
+            );
+
+        break;
+
+
+        // ==========================================
+        // WOAH
+        // ==========================================
+
+        case "ariel_woah":
+
+            dialogue_stage = "ariel_accuse";
 
             character_manager.set_active_character(
                 "Ariel"
@@ -366,29 +274,171 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "So tell me what brings you to the roof?"
+                "Woah!"
             );
 
         break;
 
 
-        case "roof":
+        // ==========================================
+        // DON'T ACCUSE ME
+        // ==========================================
 
-            dialogue_stage = "quiet";
+        case "ariel_accuse":
+
+            dialogue_stage = "ariel_never";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "Don't go accusing me of inappropriate things kid."
+            );
+
+        break;
+
+
+        // ==========================================
+        // I WOULD NEVER
+        // ==========================================
+
+        case "ariel_never":
+
+            dialogue_stage = "ariel_help";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I would never do that."
+            );
+
+        break;
+
+
+        // ==========================================
+        // HELP YOU MAKE A FRIEND
+        // ==========================================
+
+        case "ariel_help":
+
+            dialogue_stage = "mc_pause_thanks";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I just thought I could maybe help you make a new friend is all."
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC PAUSE
+        // ==========================================
+
+        case "mc_pause_thanks":
+
+            dialogue_stage = "mc_thanks";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "I just like how nice and quiet it is."
+                "..."
             );
 
         break;
 
 
-        case "quiet":
+        // ==========================================
+        // THANKS
+        // ==========================================
 
-            dialogue_stage = "hmm";
+        case "mc_thanks":
+
+            dialogue_stage = "ariel_no_worries";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Thanks for looking out for me"
+            );
+
+        break;
+
+
+        // ==========================================
+        // NO WORRIES
+        // ==========================================
+
+        case "ariel_no_worries":
+
+            dialogue_stage = "mc_pause_depressed";
+
+            character_manager.set_active_character(
+                "Ariel"
+            );
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "No worries"
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC PAUSE
+        // ==========================================
+
+        case "mc_pause_depressed":
+
+            dialogue_stage = "mc_how_smoking";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "..."
+            );
+
+        break;
+
+
+        // ==========================================
+        // WHY ARE YOU SMOKING
+        // ==========================================
+
+        case "mc_how_smoking":
+
+            dialogue_stage = "mc_depressed";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Hey so tell me how come you're always up here smoking by yourself?"
+            );
+
+        break;
+
+
+        // ==========================================
+        // ARE YOU DEPRESSED
+        // ==========================================
+
+        case "mc_depressed":
+
+            dialogue_stage = "ariel_depressed";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Are you depressed?"
+            );
+
+        break;
+
+
+        // ==========================================
+        // DEPRESSED? NOPE.
+        // ==========================================
+
+        case "ariel_depressed":
+
+            dialogue_stage = "ariel_lost";
 
             character_manager.set_active_character(
                 "Ariel"
@@ -401,287 +451,308 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "Hmm."
+                "Depressed? Nope."
             );
 
         break;
 
 
-        case "hmm":
+        // ==========================================
+        // LOST... MAYBE.
+        // ==========================================
 
-            dialogue_stage = "friends";
+        case "ariel_lost":
+
+            dialogue_stage = "mc_what_lost";
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "Sounds like something a guy with no friends would say."
+                "Lost... maybe."
             );
 
         break;
 
 
-        case "friends":
+        // ==========================================
+        // WHAT'S GOT YOU LOST
+        // ==========================================
 
-            dialogue_stage = "hey";
+        case "mc_what_lost":
+
+            dialogue_stage = "ariel_student";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "Hey!"
+                "What's got you lost?"
             );
 
         break;
 
-        // ==================================
-        // JUST KIDDING
-        // ==================================
 
-        case "hey":
+        // ==========================================
+        // SHOULDN'T DISCUSS
+        // ==========================================
 
-            dialogue_stage = "kidding";
+        case "ariel_student":
+
+            dialogue_stage = "mc_fair_1";
 
             character_manager.set_active_character(
                 "Ariel"
             );
 
-            character_manager.change_expression(
-                character_manager.ariel,
-                "default"
-            );
-
             vn_controller.start_dialogue(
                 "Ariel",
-                "I'm just kidding, don't be so serious."
+                "I don't know if it's something I should be discussing with a student"
             );
 
         break;
 
 
-        case "kidding":
+        // ==========================================
+        // IF YOU CAN SHIT ON ME
+        // ==========================================
 
-            dialogue_stage = "summer";
+        case "mc_fair_1":
 
-            vn_controller.start_dialogue(
-                "Ariel",
-                "So tell me, what did you do during your summer vacation."
-            );
-
-        break;
-
-
-        // ==================================
-        // SUMMER
-        // ==================================
-
-        case "summer":
-
-            dialogue_stage = "games";
+            dialogue_stage = "mc_fair_2";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "I stayed home and played video games all day."
+                "Hey if you can shit on me about being single"
             );
 
         break;
 
 
-        // ==================================
-        // HMMM
-        // ==================================
+        // ==========================================
+        // I GET TO ASK YOU
+        // ==========================================
 
-        case "games":
+        case "mc_fair_2":
 
-            dialogue_stage = "loner";
+            dialogue_stage = "ariel_fair";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I get to ask you about your life."
+            );
+
+        break;
+
+
+        // ==========================================
+        // THAT'S FAIR
+        // ==========================================
+
+        case "ariel_fair":
+
+            dialogue_stage = "ariel_guy";
 
             character_manager.set_active_character(
                 "Ariel"
             );
 
-            character_manager.change_expression(
-                character_manager.ariel,
-                "smoking"
-            );
-
             vn_controller.start_dialogue(
                 "Ariel",
-                "Hmmm."
+                "That's fair."
             );
 
         break;
 
 
-        case "loner":
+        // ==========================================
+        // INTO THIS GUY
+        // ==========================================
 
-            dialogue_stage = "leave";
+        case "ariel_guy":
+
+            dialogue_stage = "mc_ask_him_pause";
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "As I suspected, classic loner behavior."
+                "Well, it's just that I'm kinda into this guy but I'm not sure what to do about it."
             );
 
         break;
 
 
-        // ==================================
-        // I'M LEAVING
-        // ==================================
+        // ==========================================
+        // MC PAUSE
+        // ==========================================
 
-        case "leave":
+        case "mc_ask_him_pause":
 
-            dialogue_stage = "dont_leave";
+            dialogue_stage = "mc_ask_him";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "I'm leaving."
-            );
-
-        break;
-
-
-        case "dont_leave":
-
-            dialogue_stage = "girlfriend";
-
-            character_manager.set_active_character(
-                "Ariel"
-            );
-
-            character_manager.change_expression(
-                character_manager.ariel,
-                "default"
-            );
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "Hey hey! Don't leave, won't let a girl crack a joke? Jeez."
-            );
-
-        break;
-
-
-        case "girlfriend":
-
-            dialogue_stage = "ask_gf";
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "Tell me kid, you got a girlfriend?"
-            );
-
-        break;
-
-
-        // ==================================
-        // NO
-        // ==================================
-
-        case "ask_gf":
-
-            dialogue_stage = "smoke_again";
-
-            character_manager.set_active_character("");
-
-            vn_controller.start_dialogue(
-                "{MC}",
-                "No..."
-            );
-
-        break;
-
-
-        case "smoke_again":
-
-            dialogue_stage = "pause";
-
-            character_manager.set_active_character(
-                "Ariel"
-            );
-
-            character_manager.change_expression(
-                character_manager.ariel,
-                "smoking"
-            );
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "I don't know why I even asked."
-            );
-
-        break;
-
-
-        case "pause":
-
-            dialogue_stage = "loner2";
-
-            vn_controller.start_dialogue(
-                "Ariel",
                 "..."
             );
 
         break;
 
 
-        case "loner2":
+        // ==========================================
+        // WHY DON'T YOU ASK HIM OUT
+        // ==========================================
 
-            dialogue_stage = "roof_loser";
+        case "mc_ask_him":
+
+            dialogue_stage = "ariel_well";
 
             vn_controller.start_dialogue(
-                "Ariel",
-                "Damn, you really are a loner huh?"
+                "{MC}",
+                "Why don't you ask him out?"
             );
 
         break;
 
 
-        case "roof_loser":
+        // ==========================================
+        // ARIEL WELL
+        // ==========================================
 
-            dialogue_stage = "starter_pack";
+        case "ariel_well":
+
+            dialogue_stage = "ariel_inappropriate";
+
+            character_manager.set_active_character(
+                "Ariel"
+            );
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "Lunch on the roof, no girlfriend."
+                "Well..."
             );
 
         break;
 
 
-        case "starter_pack":
+        // ==========================================
+        // NOT APPROPRIATE
+        // ==========================================
 
-            dialogue_stage = "ring";
+        case "ariel_inappropriate":
+
+            dialogue_stage = "mc_trust_gut";
 
             vn_controller.start_dialogue(
                 "Ariel",
-                "That's the loser starter pack if I've ever seen it."
+                "I think asking him out might not be appropriate of me."
             );
 
         break;
 
 
-        case "ring":
+        // ==========================================
+        // MC TRUST YOUR GUT
+        // ==========================================
 
-            dialogue_stage = "teacher";
+        case "mc_trust_gut":
+
+            dialogue_stage = "choice";
 
             character_manager.set_active_character("");
 
             vn_controller.start_dialogue(
                 "{MC}",
-                "You're no different yourself. I don't see a ring on that finger."
+                "Well... If you think it's inappropriate then maybe you should trust your gut."
             );
 
         break;
-	
-        // ==================================
-        // TEACHER
-        // ==================================
 
-        case "teacher":
 
-            dialogue_stage = "teacher_pause";
+        // ==========================================
+        // START CHOICE
+        // ==========================================
+
+        case "choice":
+
+            start_choice();
+
+        break;
+
+
+        // ==========================================
+        // GO FOR IT RESPONSE
+        // ==========================================
+
+        case "choice_go_for_it":
+
+            dialogue_stage = "consider";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll take that into consideration, I guess."
+            );
+
+        break;
+
+
+        // ==========================================
+        // TRUST YOUR GUT RESPONSE
+        // ==========================================
+
+        case "choice_trust_gut":
+
+            dialogue_stage = "consider";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "I'll take that into consideration, I guess."
+            );
+
+        break;
+
+
+        // ==========================================
+        // DON'T LOOK SO DISTRAUGHT
+        // ==========================================
+
+        case "consider":
+
+            dialogue_stage = "mc_distraught";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "Don't look so distraught."
+            );
+
+        break;
+
+
+        // ==========================================
+        // OTHER GUYS
+        // ==========================================
+
+        case "mc_distraught":
+
+            dialogue_stage = "mc_other_guys";
+
+            vn_controller.start_dialogue(
+                "{MC}",
+                "I'm sure there's plenty of other guys who would love to go out with you."
+            );
+
+        break;
+
+
+        // ==========================================
+        // NOT SURE THAT'S ANY WAY
+        // ==========================================
+
+        case "mc_other_guys":
+
+            dialogue_stage = "ariel_laugh";
 
             character_manager.set_active_character(
                 "Ariel"
@@ -689,112 +760,88 @@ function dialogue_finished()
 
             character_manager.change_expression(
                 character_manager.ariel,
-                "default"
+                "slight_smile"
             );
 
             vn_controller.start_dialogue(
                 "Ariel",
+                "Not sure that's any way to talk to your teacher."
+            );
+
+        break;
+
+
+        // ==========================================
+        // LAUGHS
+        // ==========================================
+
+        case "ariel_laugh":
+
+            dialogue_stage = "ariel_but_thanks";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "(laughs)"
+            );
+
+        break;
+
+
+        // ==========================================
+        // BUT THANKS
+        // ==========================================
+
+        case "ariel_but_thanks":
+
+            dialogue_stage = "mc_final_pause";
+
+            vn_controller.start_dialogue(
+                "Ariel",
+                "But thanks."
+            );
+
+        break;
+
+
+        // ==========================================
+        // MC PAUSE
+        // ==========================================
+
+        case "mc_final_pause":
+
+            dialogue_stage = "mc_confiding";
+
+            character_manager.set_active_character("");
+
+            vn_controller.start_dialogue(
+                "{MC}",
                 "..."
             );
 
         break;
 
 
-        case "teacher_pause":
+        // ==========================================
+        // FINAL THANKS
+        // ==========================================
 
-            dialogue_stage = "teacher_line";
+        case "mc_confiding":
 
-            vn_controller.start_dialogue(
-                "Ariel",
-                "That's no way to talk to a teacher."
-            );
-
-        break;
-
-
-        case "teacher_line":
-
-            dialogue_stage = "teacher_pause2";
+            dialogue_stage = "end";
 
             vn_controller.start_dialogue(
-                "Ariel",
-                "..."
+                "{MC}",
+                "Thank you for confiding in me as well."
             );
 
         break;
 
 
-        case "teacher_pause2":
+        // ==========================================
+        // SCENE COMPLETE
+        // ==========================================
 
-            dialogue_stage = "joking";
-
-            character_manager.change_expression(
-                character_manager.ariel,
-                "default"
-            );
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "I'm just kidding."
-            );
-
-        break;
-
-
-        case "joking":
-
-            dialogue_stage = "cooler";
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "I guess you're not wrong. But I was a lot cooler than you when I was your age, that's for sure."
-            );
-
-        break;
-
-
-        case "cooler":
-
-            dialogue_stage = "new_student";
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "Tell you what kid, there's a new kid joining the school tomorrow."
-            );
-
-        break;
-
-
-        case "new_student":
-
-            dialogue_stage = "get_along";
-
-            vn_controller.start_dialogue(
-                "Ariel",
-                "Try and get along with them before they figure out no one hangs out with you."
-            );
-
-        break;
-
-
-        // ==================================
-        // SECOND CHOICE
-        // ==================================
-
-        case "get_along":
-
-            dialogue_stage = "choice2";
-
-            start_second_choice();
-
-        break;
-
-
-        // ==================================
-        // AFTER SECOND CHOICE
-        // ==================================
-
-        case "scene_complete":
+        case "end":
 
             character_manager.hide_character(
                 "Ariel"

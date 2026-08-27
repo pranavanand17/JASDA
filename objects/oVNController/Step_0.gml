@@ -1,19 +1,4 @@
 // ==========================================
-// DIALOGUE DELAY
-// ==========================================
-
-if (dialogue_pending)
-{
-    dialogue_delay_timer--;
-
-    if (dialogue_delay_timer <= 0)
-    {
-        dialogue_pending = false;
-        dialogue_active = true;
-        typing = true;
-    }
-}
-// ==========================================
 // DIALOGUE INPUT
 // ==========================================
 
@@ -30,19 +15,16 @@ if (dialogue_active)
             line_finished = true;
         }
         else
-		{
-		    // Dialogue is finished.
-		    dialogue_active = false;
+        {
+            // Dialogue is finished.
+            // Keep the dialogue box visible while
+            // the scene starts the next dialogue.
 
-
-		    // Tell the current scene controller
-		    // that the dialogue has finished.
-
-		    if (instance_exists(scene_manager))
-		    {
-		        scene_manager.dialogue_finished();
-		    }
-		}
+            if (instance_exists(scene_manager))
+            {
+                scene_manager.dialogue_finished();
+            }
+        }
     }
 
 
@@ -83,6 +65,7 @@ if (fade_alpha > 0)
     }
 }
 
+
 // ==========================================
 // CHOICE INPUT
 // ==========================================
@@ -91,7 +74,8 @@ if (choice_active)
 {
     for (var i = 0; i < choice_count; i++)
     {
-        var option_y = choice_y + (i * (choice_height + choice_spacing));
+        var option_y =
+            choice_y + (i * (choice_height + choice_spacing));
 
         if (mouse_x >= choice_x &&
             mouse_x <= choice_x + choice_width &&
@@ -101,18 +85,21 @@ if (choice_active)
             selected_choice = i;
 
             if (mouse_check_button_pressed(mb_left))
-			{
-			    choice_active = false;
+            {
+                choice_active = false;
 
-			    // Tell the current scene which choice was selected
-			    if (instance_exists(scene_manager))
-			    {
-			        scene_manager.choice_selected(selected_choice);
-			    }
-			}
+                // Tell the current scene which choice was selected
+                if (instance_exists(scene_manager))
+                {
+                    scene_manager.choice_selected(
+                        selected_choice
+                    );
+                }
+            }
         }
     }
 }
+
 
 // ==========================================
 // FULLSCREEN TOGGLE
