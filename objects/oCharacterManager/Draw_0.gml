@@ -28,26 +28,34 @@ for (var i = 0; i < array_length(slots); i++)
         }
 
 
+// ==========================================
+// FADE OUT
+// ==========================================
+
+if (char.fading_out)
+{
+    char.alpha -= char.fade_speed;
+
+    if (char.alpha <= 0)
+    {
+        char.alpha = 0;
+
+        char.visible = false;
+        char.fading_out = false;
+
+        characters[$ slot] = noone;
+
+
         // ==========================================
-        // FADE OUT
+        // REPOSITION REMAINING CHARACTERS
         // ==========================================
 
-        if (char.fading_out)
-        {
-            char.alpha -= char.fade_speed;
+        reposition_characters();
 
-            if (char.alpha <= 0)
-            {
-                char.alpha = 0;
 
-                char.visible = false;
-                char.fading_out = false;
-
-                characters[$ slot] = noone;
-
-                continue;
-            }
-        }
+        continue;
+    }
+}
 
 
         // ==========================================

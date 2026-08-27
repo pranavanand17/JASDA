@@ -8,6 +8,11 @@ if (vn_controller == noone)
         oVNController,
         0
     );
+
+    if (vn_controller != noone)
+    {
+        vn_controller.scene_manager = id;
+    }
 }
 
 
@@ -83,19 +88,35 @@ function dialogue_finished()
 
             vn_controller.start_dialogue(
                 "Felix",
-                "It's gym time!\nLet's go!"
+                "It's gym time!"
             );
 
         break;
 
 
         // ==================================
-        // FELIX - IT'S GYM TIME
+        // FELIX - LET'S GO
         // ==================================
 
         case "felix_gym":
 
             dialogue_stage = "mc_coming";
+
+            vn_controller.start_dialogue(
+                "Felix",
+                "Let's go!"
+            );
+
+        break;
+
+
+        // ==================================
+        // MC - COMING
+        // ==================================
+
+        case "mc_coming":
+
+            dialogue_stage = "end";
 
             character_manager.set_active_character("");
 
@@ -108,10 +129,10 @@ function dialogue_finished()
 
 
         // ==================================
-        // MC - COMING
+        // END
         // ==================================
 
-        case "mc_coming":
+        case "end":
 
             character_manager.hide_character(
                 "Felix"

@@ -12,67 +12,71 @@ for (var i = 0; i < array_length(slots); i++)
 
     if (char != noone)
     {
+// ==========================================
+// SMOOTH POSITION MOVEMENT
+// ==========================================
+
+char.x = lerp(
+    char.x,
+    char.target_x,
+    0.08
+);
         // ==========================================
-        // GET CURRENT EXPRESSION DATA
-        // ==========================================
-
-        var expression_data = expressions[$ char.name];
-
-        var current_expression = expression_data[$ char.expression];
-
-        // ==========================================
-        // GET SPRITE SCALE
-        // ==========================================
-
-        var normal_scale = current_expression.scale;
-
-
-        // ==========================================
-        // MC IS TALKING
+        // GET CHARACTER EXPRESSIONS
         // ==========================================
 
-        if (active_character == "")
+        if (!variable_struct_exists(
+            expressions,
+            char.name
+        ))
         {
-            // Don't change anyone's scale.
-            // MC has no character sprite.
+            continue;
+        }
 
-            char.target_scale = normal_scale;
+        var expression_data =
+            expressions[$ char.name];
+
+
+        // ==========================================
+        // CHECK CURRENT EXPRESSION
+        // ==========================================
+
+        if (!variable_struct_exists(
+            expression_data,
+            char.expression
+        ))
+        {
+            char.expression = "default";
         }
 
 
+        var current_expression =
+            expression_data[$ char.expression];
+
+
         // ==========================================
-        // CHARACTER IS TALKING
+        // GET NORMAL SCALE
         // ==========================================
 
-        else
-        {
-            if (char.name == active_character)
-            {
-                // ==========================================
-                // TALKING CHARACTER
-                // ==========================================
-
-                char.target_scale = normal_scale;
-            }
-            else
-            {
-                // ==========================================
-                // NON-TALKING CHARACTER
-                // ==========================================
-
-                char.target_scale = normal_scale * 0.95;
-            }
+        var normal_scale =
+            current_expression.scale;
 
 
-            // ==========================================
-            // SMOOTH SCALE CHANGE
-            // ==========================================
+        // ==========================================
+        // NO CHARACTER SHRINKING
+        // ==========================================
 
-            char.scale = lerp(
-                char.scale,
-                char.target_scale,
-                0.15
-            );
-        }
+        char.target_scale = normal_scale;
+
+
+        // ==========================================
+        // SMOOTH SCALE
+        // ==========================================
+
+        char.scale = lerp(
+            char.scale,
+            char.target_scale,
+            0.15
+        );
     }
 }

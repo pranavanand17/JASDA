@@ -62,6 +62,10 @@ function start_dialogue(_speaker, _text)
     }
 
 
+    // =========================
+    // START DIALOGUE
+    // =========================
+
     dialogue = _text;
 
     display_text = "";
@@ -69,10 +73,13 @@ function start_dialogue(_speaker, _text)
 
     line_finished = false;
 
-    dialogue_active = false;
+    // Keep the dialogue box visible
+    // when changing to the next line.
+    dialogue_active = true;
 
-    dialogue_pending = true;
-    dialogue_delay_timer = dialogue_delay;
+    typing = true;
+
+    dialogue_pending = false;
 }
 
 
@@ -100,9 +107,10 @@ text_y = box_y + 100;
 fade_alpha = 1;
 fade_speed = 0.005;
 
-dialogue_delay = 1* room_speed;
+dialogue_delay = 1 * room_speed;
 dialogue_delay_timer = 0;
 dialogue_pending = false;
+
 
 // ==========================================
 // CHOICE SYSTEM
@@ -134,10 +142,24 @@ function start_choice(_options)
 
     selected_choice = -1;
 
+
+    // ==========================================
+    // HIDE DIALOGUE BOX
+    // ==========================================
+
     dialogue_active = false;
+
+    dialogue = "";
+    display_text = "";
+    speaker = "";
+
+    text_index = 0;
+    line_finished = false;
+    typing = false;
 }
 
 scene_manager = noone;
+
 
 // ==========================================
 // FULLSCREEN

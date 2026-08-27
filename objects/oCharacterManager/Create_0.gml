@@ -48,6 +48,8 @@ function create_character(_name, _sprite)
         sprite: _sprite,
 
         x: 0,
+        target_x: 0,
+
         y: 0,
 
         expression: "default",
@@ -71,6 +73,7 @@ function create_character(_name, _sprite)
     };
 }
 
+
 // ==========================================
 // EXPRESSIONS
 // ==========================================
@@ -80,44 +83,41 @@ expressions =
     Jasda:
     {
         // 900x1058
-        default:
+        "default":
         {
             sprite: sJasda_New,
             scale: 1.03
-        },
+        }
     },
 
     Amber:
     {
         // 900x1058
-        default:
+        "default":
         {
             sprite: sAmber_New,
             scale: 1.03
-        },
+        }
     },
 
     Felix:
     {
         // 900x1058
-        default:
+        "default":
         {
             sprite: sFelix_New,
             scale: 1.03
-            
-        },
-
+        }
     },
 
     Ariel:
     {
-		// 900x1058
-        default:
+        // 900x1058
+        "default":
         {
-			sprite: sAriel_New,
-            scale: 1.03
+            sprite: sAriel_New,
+            scale: 1.5
         },
-
 
         // Old smoking sprite
         smoking:
@@ -128,32 +128,101 @@ expressions =
     }
 };
 
+
 // ==========================================
 // CHANGE EXPRESSION
 // ==========================================
 
 function change_expression(_character, _expression)
 {
+    // ==========================================
+    // VALID CHARACTER
+    // ==========================================
+
+    if (_character == noone)
+    {
+        return;
+    }
+
+
+    // ==========================================
+    // GET CHARACTER EXPRESSIONS
+    // ==========================================
+
+    if (!variable_struct_exists(
+        expressions,
+        _character.name
+    ))
+    {
+        return;
+    }
+
     var data = expressions[$ _character.name];
 
-    if (data != undefined)
+
+    // ==========================================
+    // CHECK EXPRESSION
+    // ==========================================
+
+    if (!variable_struct_exists(
+        data,
+        _expression
+    ))
     {
-        var expression_data = data[$ _expression];
+        // Fall back to default expression
 
-        if (expression_data != undefined)
+        if (variable_struct_exists(
+            data,
+            "default"
+        ))
         {
-            // Change sprite
-            _character.sprite = expression_data.sprite;
-
-            // Change scale based on this sprite
-            _character.base_scale = expression_data.scale;
-            _character.scale = expression_data.scale;
-
-            // Save expression name
-            _character.expression = _expression;
+            _expression = "default";
+        }
+        else
+        {
+            return;
         }
     }
+
+
+    // ==========================================
+    // GET EXPRESSION DATA
+    // ==========================================
+
+    var expression_data =
+        data[$ _expression];
+
+
+    // ==========================================
+    // CHANGE SPRITE
+    // ==========================================
+
+    _character.sprite =
+        expression_data.sprite;
+
+
+    // ==========================================
+    // CHANGE SCALE
+    // ==========================================
+
+    _character.base_scale =
+        expression_data.scale;
+
+    _character.scale =
+        expression_data.scale;
+
+    _character.target_scale =
+        expression_data.scale;
+
+
+    // ==========================================
+    // SAVE EXPRESSION
+    // ==========================================
+
+    _character.expression =
+        _expression;
 }
+
 
 // ==========================================
 // CREATE CHARACTERS
@@ -199,12 +268,100 @@ character_database =
 
 function get_character(_name)
 {
-    if (variable_struct_exists(character_database, _name))
+    if (variable_struct_exists(
+        character_database,
+        _name
+    ))
     {
         return character_database[$ _name];
     }
 
     return noone;
+}
+
+
+// ==========================================
+// REPOSITION CHARACTERS
+// ==========================================
+
+function reposition_characters()
+{
+    var visible_chars = [];
+
+    // ==========================================
+    // FIND ALL VISIBLE CHARACTERS
+    // ==========================================
+
+    var slots =
+    [
+        "left",
+        "center",
+        "right"
+    ];
+
+    for (
+        var i = 0;
+        i < array_length(slots);
+        i++
+    )
+    {
+        var slot = slots[i];
+
+        var char =
+            characters[$ slot];
+
+        if (
+            char != noone &&
+            char.visible
+        )
+        {
+            array_push(
+                visible_chars,
+                char
+            );
+        }
+    }
+
+
+    // ==========================================
+    // COUNT
+    // ==========================================
+
+    var count =
+        array_length(visible_chars);
+
+
+    // ==========================================
+    // ONE CHARACTER
+    // ==========================================
+
+    if (count == 1)
+    {
+        visible_chars[0].target_x = 960;
+    }
+
+
+    // ==========================================
+    // TWO CHARACTERS
+    // ==========================================
+
+    else if (count == 2)
+    {
+        visible_chars[0].target_x = 600;
+        visible_chars[1].target_x = 1320;
+    }
+
+
+    // ==========================================
+    // THREE CHARACTERS
+    // ==========================================
+
+    else if (count >= 3)
+    {
+        visible_chars[0].target_x = 300;
+        visible_chars[1].target_x = 960;
+        visible_chars[2].target_x = 1620;
+    }
 }
 
 
@@ -216,8 +373,25 @@ show_character = function(_character, _slot)
 {
     _character.visible = true;
 
-    _character.x = positions[$ _slot].x;
-    _character.y = positions[$ _slot].y;
+
+    // ==========================================
+    // SET INITIAL X POSITION
+    // ==========================================
+
+    _character.x =
+        positions[$ _slot].x;
+
+    _character.target_x =
+        _character.x;
+
+
+    // ==========================================
+    // SET Y POSITION
+    // ==========================================
+
+    _character.y =
+        positions[$ _slot].y;
+
 
     // ==========================================
     // CHARACTER OFFSETS
@@ -228,12 +402,17 @@ show_character = function(_character, _slot)
         _character.y += 480;
     }
 
+
     // ==========================================
     // RESET SCALE
     // ==========================================
 
-    _character.scale = _character.base_scale;
-    _character.target_scale = _character.base_scale;
+    _character.scale =
+        _character.base_scale;
+
+    _character.target_scale =
+        _character.base_scale;
+
 
     // ==========================================
     // FADE IN
@@ -244,7 +423,20 @@ show_character = function(_character, _slot)
     _character.fading_out = false;
     _character.fading_in = true;
 
-    characters[$ _slot] = _character;
+
+    // ==========================================
+    // ADD CHARACTER TO SLOT
+    // ==========================================
+
+    characters[$ _slot] =
+        _character;
+
+
+    // ==========================================
+    // REPOSITION EVERYONE
+    // ==========================================
+
+    reposition_characters();
 };
 
 
@@ -261,11 +453,16 @@ hide_character = function(_name)
         "right"
     ];
 
-    for (var i = 0; i < array_length(slots); i++)
+    for (
+        var i = 0;
+        i < array_length(slots);
+        i++
+    )
     {
         var slot = slots[i];
 
-        var char = characters[$ slot];
+        var char =
+            characters[$ slot];
 
         if (char != noone)
         {
@@ -282,11 +479,14 @@ hide_character = function(_name)
 // INITIAL STATE
 // ==========================================
 
-alarm[0] = room_speed * 3;
+alarm[0] =
+    room_speed * 3;
 
 active_character = "";
 
-set_active_character("Jasda");
+set_active_character(
+    "Jasda"
+);
 
 change_expression(
     jasda,
@@ -308,7 +508,18 @@ function set_active_character(_name)
 // DEBUG
 // ==========================================
 
-show_debug_message(jasda.name);
-show_debug_message(amber.name);
-show_debug_message(felix.name);
-show_debug_message(ariel.name);
+show_debug_message(
+    jasda.name
+);
+
+show_debug_message(
+    amber.name
+);
+
+show_debug_message(
+    felix.name
+);
+
+show_debug_message(
+    ariel.name
+);
