@@ -197,13 +197,18 @@ if (clock_active)
     // Change frame after 1 second
     if (
         clock_timer ==
-        ceil(audio_sound_length(snd_school_bell) * room_speed) - room_speed
+        ceil(audio_sound_length(snd_school_bell) * room_speed)
+        - room_speed
     )
     {
         clock_frame = 1;
     }
 
-    // Bell finished
+
+    // ======================================
+    // BELL FINISHED
+    // ======================================
+
     if (clock_timer <= 0)
     {
         clock_active = false;
@@ -211,7 +216,7 @@ if (clock_active)
         transition_active = true;
         transition_direction = "scene_end";
         transition_alpha = 0;
-		
-		room_goto(rm_scene4);
+
+        room_goto(rm_scene4);
     }
 }
