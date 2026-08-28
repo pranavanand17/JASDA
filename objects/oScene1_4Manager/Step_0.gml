@@ -51,7 +51,7 @@ if (
 // FADE TO BLACK
 // ==========================================
 
-if (scene_state == 6)
+if (scene_state == 7)
 {
     end_fade_alpha += end_fade_speed;
 
@@ -59,7 +59,7 @@ if (scene_state == 6)
     {
         end_fade_alpha = 1;
 
-        scene_state = 7;
+        scene_state = 8;
 
         room_goto(rm_scene2);
     }

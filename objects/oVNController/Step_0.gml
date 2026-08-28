@@ -6,23 +6,77 @@ if (dialogue_active)
 {
     if (keyboard_check_pressed(vk_space))
     {
-        // If the current line is still typing,
-        // instantly finish it.
-        if (!line_finished)
-        {
-            display_text = dialogue;
-            text_index = string_length(dialogue);
-            line_finished = true;
-        }
-        else
-        {
-            // Dialogue is finished.
-            // Keep the dialogue box visible while
-            // the scene starts the next dialogue.
+        // ==========================================
+        // CHECK IF SCENE IS ALREADY TRANSITIONING
+        // ==========================================
 
-            if (instance_exists(scene_manager))
+        var transition_locked = false;
+
+        if (instance_exists(scene_manager))
+        {
+            // --------------------------------------
+            // Generic transition
+            // --------------------------------------
+
+            if (variable_instance_exists(
+                scene_manager,
+                "transition_active"
+            ))
             {
-                scene_manager.dialogue_finished();
+                if (scene_manager.transition_active)
+                {
+                    transition_locked = true;
+                }
+            }
+
+
+            // --------------------------------------
+            // Scene ending fade
+            // --------------------------------------
+
+            if (variable_instance_exists(
+                scene_manager,
+                "scene_ending"
+            ))
+            {
+                if (scene_manager.scene_ending)
+                {
+                    transition_locked = true;
+                }
+            }
+        }
+
+
+        // ==========================================
+        // IGNORE SPACE DURING SCENE TRANSITION
+        // ==========================================
+
+        if (!transition_locked)
+        {
+            // --------------------------------------
+            // If the current line is still typing,
+            // instantly finish it.
+            // --------------------------------------
+
+            if (!line_finished)
+            {
+                display_text = dialogue;
+                text_index = string_length(dialogue);
+                line_finished = true;
+            }
+
+
+            // --------------------------------------
+            // Dialogue is finished.
+            // Tell the scene manager to continue.
+            // --------------------------------------
+
+            else
+            {
+                if (instance_exists(scene_manager))
+                {
+                    scene_manager.dialogue_finished();
+                }
             }
         }
     }

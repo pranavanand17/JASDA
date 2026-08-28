@@ -17,7 +17,10 @@ character_manager = instance_find(
     0
 );
 
-vn_controller.scene_manager = id;
+if (vn_controller != noone)
+{
+    vn_controller.scene_manager = id;
+}
 
 
 // ==========================================
@@ -103,7 +106,6 @@ function dialogue_finished()
         break;
 
 
-
         case "name":
 
             dialogue_stage = "teacher";
@@ -114,7 +116,6 @@ function dialogue_finished()
             );
 
         break;
-
 
 
         case "teacher":
@@ -129,7 +130,6 @@ function dialogue_finished()
         break;
 
 
-
         case "english":
 
             dialogue_stage = "hope";
@@ -140,7 +140,6 @@ function dialogue_finished()
             );
 
         break;
-
 
 
         case "hope":
@@ -155,7 +154,6 @@ function dialogue_finished()
         break;
 
 
-
         case "pause":
 
             dialogue_stage = "free";
@@ -166,7 +164,6 @@ function dialogue_finished()
             );
 
         break;
-
 
 
         case "free":
@@ -181,12 +178,42 @@ function dialogue_finished()
         break;
 
 
-
         case "final":
+
+            // ==========================================
+            // PREVENT FADE FROM STARTING MORE THAN ONCE
+            // ==========================================
+
+            if (transition_active)
+            {
+                return;
+            }
+
+
+            // ==========================================
+            // REMOVE DIALOGUE BEFORE CLOCK SEQUENCE
+            // ==========================================
+
+            vn_controller.dialogue_active = false;
+            vn_controller.dialogue = "";
+            vn_controller.display_text = "";
+            vn_controller.speaker = "";
+            vn_controller.typing = false;
+            vn_controller.line_finished = true;
+
+
+            // ==========================================
+            // HIDE ARIEL
+            // ==========================================
 
             character_manager.hide_character(
                 "Ariel"
             );
+
+
+            // ==========================================
+            // START CLOCK TRANSITION
+            // ==========================================
 
             transition_active = true;
             transition_direction = "to_clock";

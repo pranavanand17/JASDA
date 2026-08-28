@@ -149,7 +149,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_scene9","path":"rooms/rm_scene9/rm_scene9.yy",},},
+    {"roomId":{"name":"rm_scene7","path":"rooms/rm_scene7/rm_scene7.yy",},},
     {"roomId":{"name":"rm_splash","path":"rooms/rm_splash/rm_splash.yy",},},
     {"roomId":{"name":"rm_scene1","path":"rooms/rm_scene1/rm_scene1.yy",},},
     {"roomId":{"name":"rm_scene1_1","path":"rooms/rm_scene1_1/rm_scene1_1.yy",},},
@@ -161,7 +161,7 @@
     {"roomId":{"name":"rm_scene4","path":"rooms/rm_scene4/rm_scene4.yy",},},
     {"roomId":{"name":"rm_scene5","path":"rooms/rm_scene5/rm_scene5.yy",},},
     {"roomId":{"name":"rm_scene6","path":"rooms/rm_scene6/rm_scene6.yy",},},
-    {"roomId":{"name":"rm_scene7","path":"rooms/rm_scene7/rm_scene7.yy",},},
+    {"roomId":{"name":"rm_scene9","path":"rooms/rm_scene9/rm_scene9.yy",},},
     {"roomId":{"name":"rm_scene20","path":"rooms/rm_scene20/rm_scene20.yy",},},
     {"roomId":{"name":"rm_scene18","path":"rooms/rm_scene18/rm_scene18.yy",},},
     {"roomId":{"name":"rm_scene16","path":"rooms/rm_scene16/rm_scene16.yy",},},

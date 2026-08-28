@@ -184,7 +184,6 @@ function dialogue_finished()
         scene_state = 7;
 
         scene_ending = true;
-
         end_fade_alpha = 0;
 
         character_manager.hide_character(
